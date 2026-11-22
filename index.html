@@ -749,12 +749,190 @@
     }
     .continue-bob { animation: bobArrow 1.15s ease-in-out infinite; }
 
-    /* Giao diện giấy da cổ cho Modal đọc Bút Ký */
-    .parchment-page {
-      background: radial-gradient(circle at top left, #efe3c8 0%, #dfd0ae 62%, #cbb890 100%);
-      color: #2b2016;
-      border: 1px solid #967746;
-      box-shadow: inset 0 0 38px rgba(74, 48, 22, 0.35), 0 16px 38px rgba(0, 0, 0, 0.85);
+    /* =========================================================================
+       9. GIAO DIỆN BÚT KÝ CỔ ĐIỂN HAI TRANG GIẤY (OPEN BOOK TWO-PAGE SPREAD)
+       ========================================================================= */
+    .diary-book-cover {
+      position: relative;
+      background: linear-gradient(135deg, #4b2d1c 0%, #2a170d 48%, #3c2214 100%);
+      border: 2px solid rgba(201, 162, 94, 0.68);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow:
+        0 24px 64px rgba(0, 0, 0, 0.88),
+        0 0 36px rgba(140, 29, 36, 0.28),
+        inset 0 1px 0 rgba(244, 212, 152, 0.35),
+        inset 0 0 26px rgba(0, 0, 0, 0.68);
+    }
+
+    /* Hiệu ứng viền xấp giấy cổ ở hai cạnh trái/phải quyển sổ */
+    .diary-paper-stack {
+      position: relative;
+      border-radius: 8px;
+      background: #bfa67d;
+      padding: 0 5px 5px 5px;
+      box-shadow:
+        inset 0 -3px 0 #9f8358,
+        0 6px 18px rgba(0, 0, 0, 0.55);
+    }
+
+    .diary-spread {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      height: min(64dvh, 470px);
+      min-height: 230px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #8c6b3d;
+      background: #e6d6b5;
+    }
+
+    /* Gáy sách đổ bóng sâu ở chính giữa 2 trang */
+    .diary-spread::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 34px;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 6;
+      background: linear-gradient(
+        90deg,
+        rgba(64, 39, 18, 0) 0%,
+        rgba(56, 33, 14, 0.24) 36%,
+        rgba(32, 17, 7, 0.56) 50%,
+        rgba(56, 33, 14, 0.24) 64%,
+        rgba(64, 39, 18, 0) 100%
+      );
+    }
+
+    .diary-page {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      padding: 16px 22px 12px 22px;
+      color: #2b1d12;
+      background-image:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 26px,
+          rgba(124, 92, 52, 0.085) 27px
+        ),
+        radial-gradient(circle at top left, #f3e7cc 0%, #e4d3b0 58%, #cfb98e 100%);
+    }
+
+    .diary-page-left {
+      border-right: 1px solid rgba(92, 62, 30, 0.32);
+      padding-right: 26px;
+      box-shadow: inset -18px 0 26px -14px rgba(52, 30, 12, 0.42), inset 14px 0 22px -16px rgba(105, 72, 34, 0.35);
+    }
+
+    .diary-page-right {
+      padding-left: 26px;
+      box-shadow: inset 18px 0 26px -14px rgba(52, 30, 12, 0.42), inset -14px 0 22px -16px rgba(105, 72, 34, 0.35);
+    }
+
+    /* Khung viền trang trí mảnh cổ điển bên trong mỗi trang giấy */
+    .diary-page-inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border: 1px solid rgba(132, 98, 54, 0.35);
+      border-radius: 3px;
+      padding: 12px 14px 8px 14px;
+    }
+    .diary-page-inner::before,
+    .diary-page-inner::after {
+      content: '✦';
+      position: absolute;
+      font-size: 9px;
+      color: rgba(128, 90, 44, 0.55);
+      pointer-events: none;
+    }
+    .diary-page-inner::before { top: 2px; left: 5px; }
+    .diary-page-inner::after  { bottom: 2px; right: 5px; }
+
+    .diary-page-scroll {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .diary-page-scroll::-webkit-scrollbar { width: 3px; }
+    .diary-page-scroll::-webkit-scrollbar-track { background: rgba(122, 90, 48, 0.12); }
+    .diary-page-scroll::-webkit-scrollbar-thumb { background: rgba(122, 86, 44, 0.55); border-radius: 99px; }
+
+    /* Hiệu ứng lật trang mượt mà */
+    @keyframes diaryTurnNext {
+      0%   { opacity: 0.25; transform: perspective(1200px) rotateY(-6deg) translateX(8px); }
+      100% { opacity: 1; transform: perspective(1200px) rotateY(0deg) translateX(0); }
+    }
+    @keyframes diaryTurnPrev {
+      0%   { opacity: 0.25; transform: perspective(1200px) rotateY(6deg) translateX(-8px); }
+      100% { opacity: 1; transform: perspective(1200px) rotateY(0deg) translateX(0); }
+    }
+    .diary-flip-next { animation: diaryTurnNext 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
+    .diary-flip-prev { animation: diaryTurnPrev 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
+
+    /* Nút lật trang < và > kiểu đồng cổ hai bên quyển sổ */
+    .diary-nav-btn {
+      width: 44px;
+      height: 68px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1;
+      color: #f6dfaa;
+      background: linear-gradient(180deg, rgba(56, 38, 24, 0.94) 0%, rgba(24, 15, 11, 0.96) 100%);
+      border: 1.5px solid rgba(218, 178, 108, 0.72);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(255, 232, 182, 0.28);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .diary-nav-btn:hover:not(:disabled) {
+      background: linear-gradient(180deg, rgba(138, 32, 39, 0.95) 0%, rgba(74, 15, 20, 0.98) 100%);
+      border-color: #ffe3ae;
+      color: #fffaf0;
+      transform: scale(1.06);
+      box-shadow: 0 0 22px rgba(201, 162, 94, 0.48);
+    }
+    .diary-nav-btn:disabled {
+      opacity: 0.28;
+      cursor: not-allowed;
+      filter: grayscale(0.4);
+    }
+
+    /* Tối ưu cho màn hình ngang thấp (điện thoại xoay ngang) và màn hình hẹp */
+    @media (max-height: 500px) {
+      .diary-book-cover { padding: 6px 8px; border-radius: 10px; }
+      .diary-spread { height: calc(100dvh - 102px); min-height: 185px; }
+      .diary-page { padding: 8px 12px 6px 12px; }
+      .diary-page-left { padding-right: 16px; }
+      .diary-page-right { padding-left: 16px; }
+      .diary-page-inner { padding: 7px 9px 5px 9px; }
+      .diary-nav-btn { width: 34px; height: 54px; font-size: 20px; }
+    }
+
+    @media (max-width: 640px) {
+      .diary-book-cover { padding: 6px 7px; }
+      .diary-page { padding: 8px 9px 6px 9px; }
+      .diary-page-left { padding-right: 13px; }
+      .diary-page-right { padding-left: 13px; }
+      .diary-page-inner { padding: 7px 8px 5px 8px; }
+      .diary-nav-btn { width: 30px; height: 50px; font-size: 19px; border-radius: 8px; }
     }
 
     #portrait-tip { display: none; }
@@ -1189,19 +1367,93 @@
     </div>
 
     <!-- =======================================================================
-         6. MODAL ĐỌC BÚT KÝ (MỞ BẤT KỲ LÚC NÀO QUA NÚT 📖 BÚT KÝ)
+         6. MODAL ĐỌC BÚT KÝ CỔ ĐIỂN HAI TRANG GIẤY TRÊN NỀN ẢNH 1000050685.jpg
          ======================================================================= -->
-    <div id="diary-modal" class="hidden fixed inset-0 z-50 bg-black/82 backdrop-blur-[2px] flex items-center justify-center p-3">
-      <div class="w-full max-w-2xl max-h-[88dvh] parchment-page rounded-xl flex flex-col overflow-hidden">
-        <div class="flex items-center justify-between px-4 py-3 border-b border-[#9e7d4a]/60 bg-[#d9c7a1]/85 shrink-0">
-          <div>
-            <h2 class="font-display text-base sm:text-lg font-bold text-[#2b1d11]">📖 Cuốn Bút Ký Bìa Da Nâu</h2>
-            <p class="text-[11px] text-[#5e4731]">Đọc tự do bất kỳ lúc nào · Không tiêu hao Độ No hay thời gian</p>
+    <div id="diary-modal" class="hidden fixed inset-0 z-50 flex flex-col items-center justify-center p-2 sm:p-4 overflow-hidden">
+      <!-- Ảnh bối cảnh mở Bút Ký (1000050685.jpg) -->
+      <img
+        id="diary-bg-image"
+        src="./1000050685.jpg"
+        alt="Mở cuốn Bút Ký trên bàn gỗ"
+        class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+      />
+      <!-- Lớp phủ tối ấm giúp hai trang giấy cổ nổi bật rõ nét -->
+      <div id="diary-backdrop-click" class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(12,7,6,0.34)_0%,rgba(6,4,5,0.74)_100%)] backdrop-blur-[1.5px]"></div>
+
+      <!-- Khung chính chứa thanh tiêu đề, quyển sách hai trang và nút lật trang < / > -->
+      <div class="relative z-10 w-full max-w-[960px] flex flex-col items-center gap-1.5 sm:gap-2.5">
+        <!-- Thanh trên cùng: Tên Bút Ký + Nút Đóng Bút Ký -->
+        <div class="w-full flex items-center justify-between gap-2 px-1">
+          <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-[#160e0b]/86 border border-[#c9a25e]/55 backdrop-blur-md shadow-lg">
+            <span aria-hidden="true" class="text-sm">📖</span>
+            <span class="font-display text-xs sm:text-sm font-bold tracking-wide text-[#f3dba3]">Cuốn Bút Ký Bìa Da Nâu</span>
           </div>
-          <button id="btn-close-diary" type="button" class="w-8 h-8 rounded-lg bg-[#523922]/15 hover:bg-[#523922]/28 border border-[#7c5d37]/50 text-[#2d1e12] font-bold flex items-center justify-center cursor-pointer">✕</button>
+          <button
+            id="btn-close-diary"
+            type="button"
+            aria-label="Đóng Bút Ký"
+            class="px-3.5 py-1.5 rounded-full btn-crimson text-xs sm:text-sm font-display font-semibold flex items-center gap-1.5 cursor-pointer shadow-lg"
+          >
+            <span aria-hidden="true">✕</span>
+            <span>Đóng Bút Ký</span>
+          </button>
         </div>
-        <div id="diary-tabs" class="px-4 py-2 bg-[#d1be95]/75 border-b border-[#9e7d4a]/45 flex items-center gap-1.5 overflow-x-auto shrink-0"></div>
-        <div id="diary-page-body" class="p-4 sm:p-5 overflow-y-auto flex-1 font-serif-vn text-[14.5px] sm:text-[15.5px] leading-relaxed text-[#2c1f14]"></div>
+
+        <!-- Hàng giữa: Nút < | Quyển sách cổ hai trang giấy | Nút > -->
+        <div class="w-full flex items-center justify-center gap-1.5 sm:gap-3">
+          <!-- Nút lật về trang trước (<) -->
+          <button
+            id="btn-diary-prev"
+            type="button"
+            title="Lật về trang trước"
+            aria-label="Lật về trang trước"
+            class="diary-nav-btn"
+          >&lt;</button>
+
+          <!-- Bìa da cổ và 2 trang giấy mở đôi -->
+          <div class="diary-book-cover flex-1 min-w-0">
+            <div class="diary-paper-stack">
+              <div id="diary-spread" class="diary-spread">
+                <!-- Trang Trái -->
+                <article class="diary-page diary-page-left" aria-label="Trang trái Bút Ký">
+                  <div class="diary-page-inner">
+                    <div id="diary-left-content" class="diary-page-scroll font-serif-vn text-[12px] sm:text-[14px] leading-[1.58] text-[#2b1d12]"></div>
+                    <div id="diary-left-footer" class="pt-1.5 mt-1 border-t border-[#9a7846]/35 text-center font-editorial italic text-[11px] sm:text-xs text-[#694d2f] shrink-0">
+                      — Trang 1 —
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Trang Phải -->
+                <article class="diary-page diary-page-right" aria-label="Trang phải Bút Ký">
+                  <div class="diary-page-inner">
+                    <div id="diary-right-content" class="diary-page-scroll font-serif-vn text-[12px] sm:text-[14px] leading-[1.58] text-[#2b1d12]"></div>
+                    <div id="diary-right-footer" class="pt-1.5 mt-1 border-t border-[#9a7846]/35 text-center font-editorial italic text-[11px] sm:text-xs text-[#694d2f] shrink-0">
+                      — Trang 2 —
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nút lật sang trang sau (>) -->
+          <button
+            id="btn-diary-next"
+            type="button"
+            title="Lật sang trang tiếp theo"
+            aria-label="Lật sang trang tiếp theo"
+            class="diary-nav-btn"
+          >&gt;</button>
+        </div>
+
+        <!-- Thanh chỉ báo số trang phía dưới -->
+        <div class="flex items-center justify-center gap-3 px-3.5 py-1 rounded-full bg-[#150e0b]/84 border border-[#c9a25e]/45 backdrop-blur-md text-[11px] sm:text-xs text-[#e5cfa1] shadow-lg">
+          <span id="diary-spread-label" class="font-display font-medium tracking-wide">Trang 1 – 2 / 4</span>
+          <span class="text-[#8a6f44]">·</span>
+          <div id="diary-dots" class="flex items-center gap-1.5"></div>
+          <span class="hidden sm:inline text-[#a89373] italic text-[10.5px]">Bấm &lt; / &gt; để lật trang</span>
+        </div>
       </div>
     </div>
 
@@ -1361,6 +1613,17 @@
           '1000050674.png',
           'anh3.jpg',
           'img3.jpg'
+        ],
+        // Ảnh 4: Mở cuốn Bút Ký hai trang giấy trên bàn gỗ dưới ánh trăng đỏ
+        img4: [
+          '1000050685.jpg',
+          'images/1000050685.jpg',
+          '1000050685.png',
+          'images/1000050685.png',
+          'butky.jpg',
+          'butky.png',
+          'img4.jpg',
+          'img4.png'
         ]
       };
 
@@ -1377,7 +1640,8 @@
       const SCENES_IMG = {
         img1: resolveAssetUrl(SCENE_CANDIDATES.img1[0]),
         img2: resolveAssetUrl(SCENE_CANDIDATES.img2[0]),
-        img3: resolveAssetUrl(SCENE_CANDIDATES.img3[0])
+        img3: resolveAssetUrl(SCENE_CANDIDATES.img3[0]),
+        img4: resolveAssetUrl(SCENE_CANDIDATES.img4[0])
       };
 
       let activeSceneKey = 'img1';
@@ -1393,6 +1657,10 @@
           const preload = new Image();
           preload.onload = () => {
             SCENES_IMG[key] = url;
+            if (key === 'img4') {
+              const dbg = document.getElementById('diary-bg-image');
+              if (dbg) dbg.src = url;
+            }
           };
           preload.onerror = () => {
             idx += 1;
@@ -1402,7 +1670,7 @@
         }
         tryNext();
       }
-      ['img1', 'img2', 'img3'].forEach(preloadSceneKey);
+      ['img1', 'img2', 'img3', 'img4'].forEach(preloadSceneKey);
 
       /* =======================================================================
          PHẦN 2: DỮ LIỆU VẬT PHẨM, TRANG BÚT KÝ, MANH MỐI & HOTSPOTS
@@ -1467,45 +1735,69 @@
         }
       };
 
-      const DIARY_ENTRIES = {
-        page_1: {
-          tabLabel: 'Trăng Đỏ Tingen',
-          title: 'Ngày 1 Tháng 5, Năm 1349',
-          body: `
-            <p class="mb-3"><em>“Ánh trăng đỏ đêm nay rực một cách bất thường trên mái nhà Khu Phía Tây Tingen. Sương mù quyện mùi khói than đá đặc quánh đến nghẹt thở.”</em></p>
-            <p class="mb-3">“Mấy đêm gần đây, cứ mỗi khi đồng hồ điểm 00:00, tai ta lại văng vẳng những âm thanh như tiếng thì thầm thì thào vọng từ phía ngoài ô cửa sổ... Không rõ là tiếng gió luồn qua ống khói hay có thứ gì đó đang lặng lẽ nhìn vào căn phòng số 14 này.”</p>
-            <p>“Tiền trọ của Bà Miller lại quá hạn <strong>4 Sole</strong>. Trong túi chỉ còn vỏn vẹn 1 Bảng, 2 Sole và 12 Penny để cầm cự cả tháng này.”</p>
-          `
-        },
-        page_2: {
-          tabLabel: 'Ký hiệu Con Mắt',
-          title: 'Ngày 2 Tháng 5 — Trang viết run rẩy',
-          body: `
-            <div class="my-2 p-3 rounded-lg bg-[#cbb891]/60 border border-[#8e6f41]/55 flex flex-col sm:flex-row items-center gap-4 mb-3">
-              <svg class="w-20 h-20 shrink-0" viewBox="0 0 120 120" fill="none" stroke="#2c1a15" stroke-width="2.4">
-                <circle cx="60" cy="60" r="48" stroke-dasharray="5 4" opacity="0.72"/>
-                <path d="M16 60 Q60 22 104 60 Q60 98 16 60 Z" fill="rgba(140,29,36,0.2)"/>
-                <circle cx="60" cy="60" r="14" fill="#2b1615"/>
-                <circle cx="60" cy="60" r="5" fill="#8c1d24"/>
-              </svg>
-              <div class="text-[14px]">
-                <p class="mb-1.5 font-semibold text-[#5a1c1e]">“Ta không hề nhớ mình đã vẽ con mắt này!”</p>
-                <p class="italic">“Lúc bừng tỉnh giữa đêm, ngón tay ta dính đầy mực đen còn trang giấy trước mặt đã phủ kín ký hiệu cổ tự kỳ dị. Hình như có kẻ nào đó đã tìm thấy manh mối về cuốn sổ...”</p>
+      const DIARY_SPREADS = [
+        {
+          left: {
+            pageNum: 1,
+            dateTag: 'Ngày 1 Tháng 5 · Năm 1349',
+            title: 'Trăng Đỏ Trên Mái Nhà Tingen',
+            body: `
+              <p class="mb-2.5 italic text-[#4a2e1a]">“Ánh trăng đỏ đêm nay rực một cách bất thường trên mái nhà Khu Phía Tây Tingen. Sương mù quyện mùi khói than đá đặc quánh đến nghẹt thở.”</p>
+              <p class="mb-2.5">“Mấy đêm gần đây, cứ mỗi khi đồng hồ điểm <strong>00:00</strong>, tai ta lại văng vẳng những âm thanh như tiếng thì thầm vọng từ phía ngoài ô cửa sổ... Không rõ là tiếng gió luồn qua ống khói hay có thứ gì đó đang lặng lẽ nhìn vào căn phòng số 14 này.”</p>
+              <p>“Tiền trọ của Bà Miller lại quá hạn <strong class="text-[#6d191d]">4 Sole</strong>. Trong túi chỉ còn vỏn vẹn 1 Bảng, 2 Sole và 12 Penny để cầm cự cả tháng này.”</p>
+            `
+          },
+          right: {
+            pageNum: 2,
+            dateTag: 'Ngày 2 Tháng 5 · Trang viết run rẩy',
+            title: 'Ký Hiệu Con Mắt Cổ Tự',
+            body: `
+              <div class="my-1.5 p-2 sm:p-2.5 rounded bg-[#cbb58c]/55 border border-[#8e6d3f]/55 flex flex-col sm:flex-row items-center gap-2.5 mb-2.5">
+                <svg class="w-14 h-14 sm:w-16 sm:h-16 shrink-0" viewBox="0 0 120 120" fill="none" stroke="#2c1a15" stroke-width="2.5">
+                  <circle cx="60" cy="60" r="48" stroke-dasharray="5 4" opacity="0.72"/>
+                  <path d="M16 60 Q60 22 104 60 Q60 98 16 60 Z" fill="rgba(140,29,36,0.18)"/>
+                  <circle cx="60" cy="60" r="14" fill="#2b1615"/>
+                  <circle cx="60" cy="60" r="5" fill="#8c1d24"/>
+                </svg>
+                <div class="text-[11.5px] sm:text-[13px] leading-snug">
+                  <p class="mb-1 font-semibold text-[#64191c]">“Ta không hề nhớ mình đã vẽ con mắt này!”</p>
+                  <p class="italic">“Lúc bừng tỉnh giữa đêm, ngón tay ta dính đầy mực đen còn trang giấy đã phủ kín ký hiệu cổ tự kỳ dị...”</p>
+                </div>
               </div>
-            </div>
-            <p>Nét mực ở cuối trang nhòe đi, kèm một dòng ghi vội: <em>“Nếu ngày mai ta quên mất mình là ai, hãy kiểm tra tấm ván lỏng dưới đáy tủ quần áo cũ!”</em></p>
-          `
+              <p class="mb-2">“Hình như có kẻ nào đó đã tìm thấy manh mối về cuốn sổ này.”</p>
+              <p class="italic text-[#4f281c]">Nét mực cuối trang nhòe đi, ghi vội một dòng: “Nếu ngày mai ta quên mất mình là ai, hãy kiểm tra <strong>tấm ván lỏng dưới đáy tủ quần áo cũ</strong>!”</p>
+            `
+          }
         },
-        page_3: {
-          tabLabel: 'Cuộc hẹn 02:00',
-          title: 'Ghi chú bị gấp góc ở trang cuối',
-          body: `
-            <p class="mb-3 font-semibold text-[#5a1c1e]">“Đúng 02:00 sáng Ngày 3 Tháng 5 — Gặp tại Quán rượu Mỏ Neo Gỉ gần bến tàu Tingen.”</p>
-            <p class="mb-3">“Đừng quay đầu lại nếu nghe tiếng bước chân đi song song trong làn sương. Mang theo mảnh bùa đồng và giữ đủ tỉnh táo — kẻ mặc áo choàng đen ở Khu Phía Tây không phải người thường.”</p>
-            <p class="italic text-[#614a32]">(Bên lề ghi nhỏ bằng bút chì: “Nợ tiền phòng 4 Sole · Bà Miller sẽ gõ cửa bất cứ lúc nào.”)</p>
-          `
+        {
+          left: {
+            pageNum: 3,
+            dateTag: 'Ghi chú bị gấp góc · Trang cuối',
+            title: 'Cuộc Hẹn Lúc 02:00 Sáng',
+            body: `
+              <p class="mb-2.5 font-semibold text-[#64191c]">“Đúng 02:00 sáng Ngày 3 Tháng 5 — Gặp tại Quán rượu Mỏ Neo Gỉ gần bến tàu Tingen.”</p>
+              <p class="mb-2.5">“Đừng quay đầu lại nếu nghe tiếng bước chân đi song song trong làn sương. Hãy mang theo <strong>mảnh bùa đồng</strong> và giữ đủ tỉnh táo — kẻ mặc áo choàng đen ở Khu Phía Tây không phải người thường.”</p>
+              <div class="mt-3 pt-2 border-t border-dashed border-[#8a6a3f]/55 text-[11.5px] sm:text-[12.5px] italic text-[#5b442d]">
+                (Ghi nhỏ bằng bút chì bên lề: “Nợ tiền phòng 4 Sole · Bà Miller sẽ gõ cửa bất cứ lúc nào.”)
+              </div>
+            `
+          },
+          right: {
+            pageNum: 4,
+            dateTag: 'Mảnh giấy kẹp cuối sổ',
+            title: 'Ghi Chú Mờ Nhạt',
+            body: `
+              <div class="p-2.5 rounded bg-[#d5c19a]/45 border border-[#927042]/40 mb-2.5 text-[11.5px] sm:text-[13px]">
+                <p class="font-display font-bold text-[#492c17] mb-1">Quy ước tiền tệ Vương quốc Loen:</p>
+                <p>• 1 Bảng vàng = 12 Sole bạc</p>
+                <p>• 1 Sole bạc = 20 Penny đồng</p>
+              </div>
+              <p class="italic text-[#5e4730] mb-2">“Ánh trăng đỏ vẫn dõi theo từng ô cửa kính ẩm ướt của Khu Phía Tây... Hãy giữ lấy sự tỉnh táo trước khi màn sương nuốt chửng lý trí.”</p>
+              <p class="text-right font-editorial italic text-[12px] text-[#74593b] mt-4">— Phần giấy còn lại để trống —</p>
+            `
+          }
         }
-      };
+      ];
 
       const CLUES_DATA = {
         clue_diary: {
@@ -1720,7 +2012,8 @@
       let hasUnreadDrawerNotice = false;
       let pendingHotspotKey = null;
       let activeInvTab = 'food';
-      let activeDiaryTab = 'page_1';
+      let activeDiarySpread = 0;
+      let onDiaryCloseCallback = null;
       let isTheaterExpanded = false;
       let sceneExploreHintDismissed = false;
 
@@ -1806,9 +2099,18 @@
         btnHcConfirm: document.getElementById('btn-hc-confirm'),
 
         diaryModal: document.getElementById('diary-modal'),
+        diaryBgImage: document.getElementById('diary-bg-image'),
+        diaryBackdropClick: document.getElementById('diary-backdrop-click'),
         btnCloseDiary: document.getElementById('btn-close-diary'),
-        diaryTabs: document.getElementById('diary-tabs'),
-        diaryPageBody: document.getElementById('diary-page-body'),
+        btnDiaryPrev: document.getElementById('btn-diary-prev'),
+        btnDiaryNext: document.getElementById('btn-diary-next'),
+        diarySpread: document.getElementById('diary-spread'),
+        diaryLeftContent: document.getElementById('diary-left-content'),
+        diaryRightContent: document.getElementById('diary-right-content'),
+        diaryLeftFooter: document.getElementById('diary-left-footer'),
+        diaryRightFooter: document.getElementById('diary-right-footer'),
+        diarySpreadLabel: document.getElementById('diary-spread-label'),
+        diaryDots: document.getElementById('diary-dots'),
 
         wardrobeModal: document.getElementById('wardrobe-modal'),
         btnCloseWardrobe: document.getElementById('btn-close-wardrobe'),
@@ -2299,33 +2601,87 @@
         });
       }
 
-      function renderDiaryModal() {
-        el.diaryNewDot.classList.add('hidden');
-        const pageKeys = Object.keys(DIARY_ENTRIES);
-        if (!pageKeys.includes(activeDiaryTab)) activeDiaryTab = pageKeys[0];
-
-        el.diaryTabs.innerHTML = '';
-        pageKeys.forEach(pageId => {
-          const entry = DIARY_ENTRIES[pageId];
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          const isActive = pageId === activeDiaryTab;
-          btn.className = isActive
-            ? 'px-3 py-1 rounded-md text-xs font-bold bg-[#5a3b20] text-[#f7ebd1] border border-[#3d2511] shrink-0 cursor-pointer'
-            : 'px-3 py-1 rounded-md text-xs font-medium bg-[#e6d7b6]/80 text-[#4a331f] border border-[#967746]/50 hover:bg-[#dec99d] shrink-0 cursor-pointer';
-          btn.textContent = entry.tabLabel;
-          btn.addEventListener('click', () => {
-            activeDiaryTab = pageId;
-            renderDiaryModal();
-          });
-          el.diaryTabs.appendChild(btn);
-        });
-
-        const cur = DIARY_ENTRIES[activeDiaryTab];
-        el.diaryPageBody.innerHTML = `
-          <h3 class="font-display text-lg sm:text-xl font-bold text-[#3d2314] border-b border-[#9e7d4a]/45 pb-2 mb-3">${cur.title}</h3>
-          ${cur.body}
+      function buildDiaryPageHtml(page) {
+        if (!page) return '';
+        return `
+          <div class="text-center border-b border-[#9a7644]/45 pb-1.5 mb-2.5">
+            <div class="font-editorial italic text-[11px] sm:text-xs text-[#6d4e2d] tracking-wide">${page.dateTag}</div>
+            <h3 class="font-display text-sm sm:text-base font-bold text-[#371f11] leading-snug mt-0.5">${page.title}</h3>
+          </div>
+          <div>${page.body}</div>
         `;
+      }
+
+      function renderDiaryModal(flipDir = '') {
+        el.diaryNewDot.classList.add('hidden');
+        const totalSpreads = DIARY_SPREADS.length;
+        const totalPages = totalSpreads * 2;
+        activeDiarySpread = Math.max(0, Math.min(totalSpreads - 1, activeDiarySpread));
+
+        if (el.diaryBgImage && SCENES_IMG.img4) {
+          el.diaryBgImage.src = SCENES_IMG.img4;
+        }
+
+        const spread = DIARY_SPREADS[activeDiarySpread];
+        el.diaryLeftContent.innerHTML = buildDiaryPageHtml(spread.left);
+        el.diaryRightContent.innerHTML = buildDiaryPageHtml(spread.right);
+        el.diaryLeftContent.scrollTop = 0;
+        el.diaryRightContent.scrollTop = 0;
+
+        el.diaryLeftFooter.textContent = `— Trang ${spread.left.pageNum} —`;
+        el.diaryRightFooter.textContent = `— Trang ${spread.right.pageNum} —`;
+        el.diarySpreadLabel.textContent = `Trang ${spread.left.pageNum} – ${spread.right.pageNum} / ${totalPages}`;
+
+        el.btnDiaryPrev.disabled = activeDiarySpread <= 0;
+        el.btnDiaryNext.disabled = activeDiarySpread >= totalSpreads - 1;
+
+        // Chấm tròn biểu thị từng cặp trang
+        el.diaryDots.innerHTML = '';
+        for (let i = 0; i < totalSpreads; i++) {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.setAttribute('aria-label', `Mở trang ${i * 2 + 1} - ${i * 2 + 2}`);
+          dot.className = i === activeDiarySpread
+            ? 'w-2.5 h-2.5 rounded-full bg-[#eed199] shadow-[0_0_8px_#eed199] cursor-pointer transition'
+            : 'w-2 h-2 rounded-full bg-[#7a6342]/70 hover:bg-[#c9a25e] cursor-pointer transition';
+          dot.addEventListener('click', () => {
+            if (i === activeDiarySpread) return;
+            const dir = i > activeDiarySpread ? 'next' : 'prev';
+            activeDiarySpread = i;
+            renderDiaryModal(dir);
+          });
+          el.diaryDots.appendChild(dot);
+        }
+
+        if (flipDir && el.diarySpread) {
+          el.diarySpread.classList.remove('diary-flip-next', 'diary-flip-prev');
+          void el.diarySpread.offsetWidth;
+          el.diarySpread.classList.add(flipDir === 'next' ? 'diary-flip-next' : 'diary-flip-prev');
+        }
+      }
+
+      function openDiaryModal(onClose = null, startSpread = 0) {
+        onDiaryCloseCallback = typeof onClose === 'function' ? onClose : null;
+        if (typeof startSpread === 'number') activeDiarySpread = startSpread;
+        renderDiaryModal();
+        el.diaryModal.classList.remove('hidden');
+      }
+
+      function closeDiaryModal() {
+        if (el.diaryModal.classList.contains('hidden')) return;
+        el.diaryModal.classList.add('hidden');
+        if (typeof onDiaryCloseCallback === 'function') {
+          const cb = onDiaryCloseCallback;
+          onDiaryCloseCallback = null;
+          cb();
+        }
+      }
+
+      function turnDiarySpread(delta) {
+        const nextIdx = activeDiarySpread + delta;
+        if (nextIdx < 0 || nextIdx >= DIARY_SPREADS.length) return;
+        activeDiarySpread = nextIdx;
+        renderDiaryModal(delta > 0 ? 'next' : 'prev');
       }
 
       function renderWardrobeModal() {
@@ -2840,14 +3196,14 @@
         }
       }
 
-      /** ĐIỂM 1: ĐỌC BÚT KÝ -> CHUYỂN SANG 1000050673.png -> MỞ KHÓA NÚT 📖 BÚT KÝ */
+      /** ĐIỂM 1: ĐỌC BÚT KÝ -> CHUYỂN SANG 1000050685.jpg -> MỞ SỔ CỔ ĐIỂN 2 TRANG -> MỞ KHÓA NÚT 📖 BÚT KÝ */
       async function runInvestigateDiary() {
         isCinematicBusy = true;
         gameState.stage = 'investigating';
 
         el.cameraRig.className = 'pull-back-start';
         await wait(280);
-        setSceneImage('img2', 'Bàn viết gỗ · Cuốn Bút Ký');
+        setSceneImage('img4', 'Bàn viết gỗ · Mở cuốn Bút Ký');
         resetCameraZoom();
         await wait(80);
         el.cameraRig.className = 'eye-clear';
@@ -2860,22 +3216,20 @@
         startDialogueQueue([
           {
             speaker: 'Dẫn chuyện',
-            text: 'Bạn tiến lại gần chiếc bàn gỗ cũ, lật mở từng trang giấy ố vàng của cuốn Bút Ký dưới ánh đèn dầu vàng vọt.'
-          },
-          {
-            speaker: 'Cuốn Bút Ký',
-            text: '“Ánh trăng đỏ trên Khu Phía Tây Tingen rực một cách bất thường... Cứ đúng 00:00 lại có tiếng thì thầm vọng từ ngoài cửa sổ. Tiền trọ của Bà Miller quá hạn 4 Sole...”'
-          },
-          {
-            speaker: 'Cuốn Bút Ký',
-            text: 'Ở trang kế bên là hình vẽ nguệch ngoạc một con mắt kỳ dị nằm giữa vòng cổ tự, kèm dòng mực nhòe viết vội: “Hãy kiểm tra tấm ván lỏng dưới đáy tủ quần áo cũ... Đúng 02:00 gặp tại Quán rượu Mỏ Neo Gỉ.”'
-          },
-          {
-            speaker: 'Hệ thống',
-            text: '✦ Đã ghi nhận manh mối và mở khóa nút [📖 Bút Ký] ở góc trên bên phải! Từ giờ bạn có thể mở đọc lại toàn bộ trang sổ bất kỳ lúc nào.'
+            text: 'Bạn tiến lại gần chiếc bàn gỗ cũ, đặt hai tay nhẹ nhàng mở rộng cuốn Bút Ký ra dưới ánh đèn dầu lập lòe và sắc trăng đỏ ngoài khung cửa.'
           }
         ], () => {
-          enterRoomOverviewPhaseC(false);
+          hideDialogueBox();
+          openDiaryModal(() => {
+            startDialogueQueue([
+              {
+                speaker: 'Hệ thống',
+                text: '✦ Đã ghi nhận manh mối từ cuốn Bút Ký và mở khóa nút [📖 Bút Ký] ở góc trên bên phải! Từ giờ bạn có thể mở xem lại từng trang sổ bất kỳ lúc nào.'
+              }
+            ], () => {
+              enterRoomOverviewPhaseC(false);
+            });
+          }, 0);
         });
       }
 
@@ -3318,10 +3672,22 @@
               advanceDialogue();
             }
           }
+          if (!el.diaryModal.classList.contains('hidden')) {
+            if (e.key === 'ArrowRight') {
+              e.preventDefault();
+              turnDiarySpread(1);
+              return;
+            }
+            if (e.key === 'ArrowLeft') {
+              e.preventDefault();
+              turnDiarySpread(-1);
+              return;
+            }
+          }
           if (e.key === 'Escape') {
             closeHotspotConfirm();
             el.inventoryModal.classList.add('hidden');
-            el.diaryModal.classList.add('hidden');
+            closeDiaryModal();
             el.wardrobeModal.classList.add('hidden');
             el.notesModal.classList.add('hidden');
             el.confirmModal.classList.add('hidden');
@@ -3335,14 +3701,23 @@
           if (isDrawerOpen) setDrawerOpen(false);
         });
 
-        // 6. Các nút mở nhanh góc trên phải: 📖 Bút Ký & 🚪 Mở Tủ
+        // 6. Các nút mở nhanh góc trên phải: 📖 Bút Ký (2 trang cổ điển) & 🚪 Mở Tủ
         el.btnQuickDiary.addEventListener('click', () => {
-          renderDiaryModal();
-          el.diaryModal.classList.remove('hidden');
+          openDiaryModal(null, activeDiarySpread);
         });
-        el.btnCloseDiary.addEventListener('click', () => el.diaryModal.classList.add('hidden'));
-        el.diaryModal.addEventListener('click', e => {
-          if (e.target === el.diaryModal) el.diaryModal.classList.add('hidden');
+        el.btnCloseDiary.addEventListener('click', closeDiaryModal);
+        el.diaryBackdropClick.addEventListener('click', closeDiaryModal);
+        el.btnDiaryPrev.addEventListener('click', () => turnDiarySpread(-1));
+        el.btnDiaryNext.addEventListener('click', () => turnDiarySpread(1));
+
+        // Tự dò ảnh dự phòng cho nền Bút Ký (img4) nếu lỗi tải
+        let diaryBgAttempt = 0;
+        el.diaryBgImage.addEventListener('error', () => {
+          const list = SCENE_CANDIDATES.img4 || [];
+          diaryBgAttempt += 1;
+          if (diaryBgAttempt < list.length) {
+            el.diaryBgImage.src = resolveAssetUrl(list[diaryBgAttempt]);
+          }
         });
 
         el.btnQuickWardrobe.addEventListener('click', () => {
