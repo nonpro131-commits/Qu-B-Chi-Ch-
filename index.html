@@ -388,14 +388,55 @@
       transform: translateY(118%);
     }
 
-    /* Điều chỉnh tốc độ nhắm/mở mượt theo từng pha */
+    /* Lớp tối phụ đồng bộ khi mí mắt khép kín để chuyển cảnh chân thật tuyệt đối */
+    #eyelid-veil {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(4, 3, 5, 0.92) 0%, #030204 75%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s ease;
+    }
+    #eyelid-layer.eyes-closed #eyelid-veil {
+      opacity: 1;
+    }
+    #eyelid-layer.eyes-peeking #eyelid-veil {
+      opacity: 0.42;
+    }
+    #eyelid-layer.eyes-squint #eyelid-veil {
+      opacity: 0.58;
+    }
+    #eyelid-layer.eyes-open #eyelid-veil {
+      opacity: 0;
+    }
+
+    /* Điều chỉnh tốc độ nhắm/mở mượt theo từng pha (mí trên đóng nhanh hơn mí dưới tự nhiên) */
     #eyelid-layer.speed-slow .eyelid-shutter {
       transition-duration: 1.25s;
     }
     #eyelid-layer.speed-fast .eyelid-shutter {
       transition-duration: 0.55s;
     }
-    #eyelid-layer.instant .eyelid-shutter {
+    #eyelid-layer.speed-blink-close #eyelid-top {
+      transition: transform 0.46s cubic-bezier(0.42, 0, 0.2, 1);
+    }
+    #eyelid-layer.speed-blink-close #eyelid-bottom {
+      transition: transform 0.54s cubic-bezier(0.42, 0, 0.2, 1);
+    }
+    #eyelid-layer.speed-blink-close #eyelid-veil {
+      transition-duration: 0.48s;
+    }
+    #eyelid-layer.speed-blink-open #eyelid-top {
+      transition: transform 0.88s cubic-bezier(0.2, 0.88, 0.32, 1);
+    }
+    #eyelid-layer.speed-blink-open #eyelid-bottom {
+      transition: transform 0.96s cubic-bezier(0.2, 0.88, 0.32, 1);
+    }
+    #eyelid-layer.speed-blink-open #eyelid-veil {
+      transition-duration: 0.82s;
+    }
+    #eyelid-layer.instant .eyelid-shutter,
+    #eyelid-layer.instant #eyelid-veil {
       transition-duration: 0s !important;
     }
 
@@ -1092,6 +1133,7 @@
          2. LỚP MÍ MẮT ĐIỆN ẢNH (MỞ MẮT CHẬM & CHỚP MẮT CHUYỂN CẢNH)
          ======================================================================= -->
     <div id="eyelid-layer" class="eyes-open" aria-hidden="true">
+      <div id="eyelid-veil"></div>
       <div id="eyelid-top" class="eyelid-shutter"></div>
       <div id="eyelid-bottom" class="eyelid-shutter"></div>
     </div>
@@ -1624,6 +1666,28 @@
           'butky.png',
           'img4.jpg',
           'img4.png'
+        ],
+        // Ảnh 5: Hành lang tầng 3 nhà trọ (rời khỏi phòng số 14)
+        img5: [
+          '1000050691.jpg',
+          'images/1000050691.jpg',
+          '1000050691.png',
+          'images/1000050691.png',
+          'hanhlang.jpg',
+          'hanhlang.png',
+          'img5.jpg',
+          'img5.png'
+        ],
+        // Ảnh 6: Cửa chính tầng trệt nhà trọ nhìn ra phố Tingen (rời khỏi nhà trọ)
+        img6: [
+          '1000050692.jpg',
+          'images/1000050692.jpg',
+          '1000050692.png',
+          'images/1000050692.png',
+          'cuachinh.jpg',
+          'cuachinh.png',
+          'img6.jpg',
+          'img6.png'
         ]
       };
 
@@ -1641,7 +1705,9 @@
         img1: resolveAssetUrl(SCENE_CANDIDATES.img1[0]),
         img2: resolveAssetUrl(SCENE_CANDIDATES.img2[0]),
         img3: resolveAssetUrl(SCENE_CANDIDATES.img3[0]),
-        img4: resolveAssetUrl(SCENE_CANDIDATES.img4[0])
+        img4: resolveAssetUrl(SCENE_CANDIDATES.img4[0]),
+        img5: resolveAssetUrl(SCENE_CANDIDATES.img5[0]),
+        img6: resolveAssetUrl(SCENE_CANDIDATES.img6[0])
       };
 
       let activeSceneKey = 'img1';
@@ -1670,7 +1736,7 @@
         }
         tryNext();
       }
-      ['img1', 'img2', 'img3', 'img4'].forEach(preloadSceneKey);
+      ['img1', 'img2', 'img3', 'img4', 'img5', 'img6'].forEach(preloadSceneKey);
 
       /* =======================================================================
          PHẦN 2: DỮ LIỆU VẬT PHẨM, TRANG BÚT KÝ, MANH MỐI & HOTSPOTS
@@ -1990,7 +2056,10 @@
             cliffhangerTriggered: false,
             millerAnswered: false,
             millerRentPaid: false,
-            millerPieBought: false
+            millerPieBought: false,
+            visitedHallway: false,
+            tookBath: false,
+            visitedInnExit: false
           },
           clues: [],
           inventory: [
@@ -2214,6 +2283,70 @@
       function zoomCameraTo(originXPercent, originYPercent, scaleVal = 1.38) {
         el.cameraRig.style.transformOrigin = `${originXPercent}% ${originYPercent}%`;
         el.cameraRig.style.transform = `scale(${scaleVal})`;
+      }
+
+      /** Đợi ảnh mới tải xong (hoặc quá hạn ngắn) khi mí mắt đang khép kín */
+      function waitImageReady(timeoutMs = 1200) {
+        if (el.sceneImage.complete && el.sceneImage.naturalWidth > 0) {
+          return Promise.resolve();
+        }
+        return Promise.race([
+          new Promise(resolve => {
+            el.sceneImage.addEventListener('load', resolve, { once: true });
+            el.sceneImage.addEventListener('error', resolve, { once: true });
+          }),
+          wait(timeoutMs)
+        ]);
+      }
+
+      /**
+       * Hiệu ứng chuyển cảnh chân thật kiểu nhắm mắt — mở mắt:
+       * 1) Mí mắt khép dần kèm mờ nhẹ tầm nhìn
+       * 2) Giữ tối tuyệt đối khi hoán đổi ảnh bối cảnh mới
+       * 3) Hé mắt nhẹ rồi mở mắt hoàn toàn lấy nét sắc trở lại
+       */
+      async function playBlinkSceneTransition(sceneKey, locationTitle, options = {}) {
+        const closeMs = options.closeMs ?? 540;
+        const holdMs = options.holdMs ?? 280;
+        const peekMs = options.peekMs ?? 240;
+        const openMs = options.openMs ?? 900;
+
+        isCinematicBusy = true;
+        document.body.classList.add('cinematic-lock');
+
+        setDrawerOpen(false);
+        hideDialogueBox();
+        hideChoices();
+        updateHotspotPinsVisibility(false);
+
+        // Pha 1: Mí mắt khép lại tự nhiên
+        el.cameraRig.className = 'eye-half-blur';
+        el.eyelidLayer.className = 'eyes-closed speed-blink-close';
+        await wait(closeMs);
+
+        // Pha 2: Mắt nhắm kín hoàn toàn -> đổi cảnh & đồng bộ khung tọa độ
+        resetCameraZoom();
+        el.cameraRig.className = 'eye-blur';
+        if (sceneKey) {
+          setSceneImage(sceneKey, locationTitle);
+          await waitImageReady(1200);
+        } else if (locationTitle) {
+          el.sceneLocationText.textContent = locationTitle;
+        }
+        syncHotspotOverlayRect();
+        await wait(holdMs);
+
+        // Pha 3: Hé mắt lấy ánh sáng rồi mở hoàn toàn rõ nét
+        el.eyelidLayer.className = 'eyes-peeking speed-fast';
+        el.cameraRig.className = 'eye-half-blur';
+        await wait(peekMs);
+
+        el.eyelidLayer.className = 'eyes-open speed-blink-open';
+        el.cameraRig.className = 'eye-clear';
+        await wait(openMs);
+
+        document.body.classList.remove('cinematic-lock');
+        isCinematicBusy = false;
       }
 
       /* =======================================================================
@@ -3089,15 +3222,9 @@
         await wait(900);
         isCinematicBusy = false;
 
-        // Kiểm tra xem đã điều tra xong hết cả 3 điểm chưa
+        // Kiểm tra xem đã điều tra xong hết cả 3 điểm (1, 2, 3) chưa -> hiện nút "Rời khỏi phòng"
         if (allThreePinsCompleted()) {
-          if (!gameState.flags.cliffhangerTriggered) {
-            triggerAllDoneCliffhanger();
-          } else if (!gameState.flags.millerAnswered) {
-            showCliffhangerChoiceBar();
-          } else {
-            showPostMillerExploreBar();
-          }
+          showRoomReadyToLeave(false);
           autoSaveQuiet();
           return;
         }
@@ -3305,174 +3432,231 @@
       }
 
       /* =======================================================================
-         PHẦN 12: SỰ KIỆN CAO TRÀO SAU KHI XONG CẢ 3 ĐIỂM (BÀ MILLER & ĐỔI TIỀN 3 MỆNH GIÁ)
+         PHẦN 12: RỜI KHỎI PHÒNG -> HÀNH LANG (ẢNH 1) -> 3 LỰA CHỌN -> RỜI NHÀ TRỌ (ẢNH 2)
          ======================================================================= */
-      function triggerAllDoneCliffhanger() {
-        gameState.flags.cliffhangerTriggered = true;
-        gameState.stage = 'cliffhanger';
+
+      /** Sau khi hoàn thành cả 3 điểm (1, 2, 3): hiện nút "Rời khỏi phòng" */
+      function showRoomReadyToLeave(isReturningFromHallway = false) {
+        gameState.stage = 'room_ready_leave';
+        el.sceneLocationText.textContent = 'Phòng số 14 · Khu Phía Tây Tingen';
+        updateHotspotPinsVisibility(false);
         autoSaveQuiet();
+
+        const lines = isReturningFromHallway
+          ? [
+              {
+                speaker: 'Dẫn chuyện',
+                text: 'Bạn đẩy cửa bước trở lại căn phòng số 14 quen thuộc. Ánh trăng đỏ vẫn rọi xiên qua ô cửa sổ lên mặt bàn gỗ cũ kỹ.',
+                autoTriggerOnEnd: true
+              }
+            ]
+          : [
+              {
+                speaker: 'Dẫn chuyện',
+                text: 'Bạn đã kiểm tra xong cả ba vị trí trong căn phòng số 14. Những mảnh ghép rời rạc bắt đầu nối lại trong đầu — đã đến lúc mở cửa bước ra ngoài.',
+                autoTriggerOnEnd: true
+              }
+            ];
+
+        startDialogueQueue(lines, () => {
+          renderChoices([
+            {
+              label: 'Rời khỏi phòng',
+              costText: '-1 Độ No · +1 phút',
+              highlight: true,
+              onSelect: async () => {
+                const died = applySurvivalCost({ hunger: 1, minutes: 1 });
+                if (died) return;
+                await enterHallwayScene(true);
+              }
+            }
+          ]);
+        });
+      }
+
+      /** Chuyển cảnh nhắm mắt mở mắt sang Hành lang tầng 3 (Ảnh 1: 1000050691.jpg) & hiện 3 lựa chọn */
+      async function enterHallwayScene(useBlink = true) {
+        if (useBlink) {
+          await playBlinkSceneTransition('img5', 'Hành lang tầng 3 · Nhà trọ Khu Phía Tây');
+        } else {
+          resetCameraZoom();
+          setSceneImage('img5', 'Hành lang tầng 3 · Nhà trọ Khu Phía Tây');
+          el.cameraRig.className = 'eye-clear';
+          updateHotspotPinsVisibility(false);
+        }
+
+        gameState.stage = 'hallway';
+        const firstVisit = !gameState.flags.visitedHallway;
+        gameState.flags.visitedHallway = true;
+        autoSaveQuiet();
+
+        const introText = firstVisit
+          ? 'Bạn đặt tay đẩy cánh cửa gỗ cũ cọt kẹt mở ra. Hành lang tầng ba hiện ra trước mắt trong sắc trăng đỏ xuyên qua ô kính cao, ngọn đèn dầu treo tường hắt ánh sáng leo lét xuống dãy ván sàn tối thẫm.'
+          : 'Bạn đứng giữa hành lang tầng ba tĩnh mịch của khu nhà trọ. Phía cuối hành lang là cầu thang xuống tầng trệt và lối dẫn sang phòng tắm chung.';
 
         startDialogueQueue([
           {
             speaker: 'Dẫn chuyện',
-            text: 'Vừa lúc bạn hoàn tất việc kiểm tra cả ba vị trí trong căn phòng số 14, hành lang gỗ bên ngoài bỗng vang lên tiếng bước chân nặng nề tiến lại gần...'
-          },
-          {
-            speaker: 'Dẫn chuyện',
-            text: 'CỐC! CỐC! CỐC! — Tiếng gõ dồn dập dội lên cánh cửa phòng trọ, kèm giọng nói nghiêm khắc quen thuộc trong ký ức thân xác này: “Cậu {{NAME}} còn thức chứ?! Tiền trọ 4 Sole quá hạn định thế nào đây?”',
+            text: introText,
             autoTriggerOnEnd: true
           }
         ], () => {
-          showCliffhangerChoiceBar();
+          showHallwayChoices();
         });
       }
 
-      function showCliffhangerChoiceBar() {
-        gameState.stage = 'cliffhanger';
+      /** Đúng 3 lựa chọn tại Hành lang: Rời khỏi nhà trọ, Đi Tắm, Quay lại phòng */
+      function showHallwayChoices() {
+        gameState.stage = 'hallway';
+        const bathCostLabel = gameState.flags.tookBath
+          ? '-2 Độ No · +8 phút · +4 TT'
+          : '-4 Độ No · +15 phút · +12 TT';
+
         renderChoices([
           {
-            label: 'Ra mở cửa gặp Bà Miller',
-            costText: '-2 Độ No · +5 phút',
+            label: 'Rời khỏi nhà trọ',
+            costText: '-2 Độ No · +3 phút',
             highlight: true,
-            onSelect: () => {
-              const died = applySurvivalCost({ hunger: 2, minutes: 5 });
-              if (!died) startMillerInteraction();
+            onSelect: async () => {
+              const died = applySurvivalCost({ hunger: 2, minutes: 3 });
+              if (died) return;
+              await enterInnExitScene(true);
             }
           },
           {
-            label: 'Tạm lặng yên kiểm tra đồ đạc',
-            costText: 'Tự do',
-            onSelect: () => {
-              showToast('Bạn có thể mở 📖 Bút Ký, 🚪 Mở Tủ hoặc Ngăn kéo Trạng Thái trước khi mở cửa.', 'neutral');
-              startDialogueQueue([
-                {
-                  speaker: 'Dẫn chuyện',
-                  text: 'Bà Miller vẫn đang đứng chờ ngoài hành lang tầng ba. Hãy kiểm tra hành trang và tiền bạc (Bảng · Sole · Penny) xong rồi ra mở cửa.',
-                  autoTriggerOnEnd: true
-                }
-              ], () => {
-                renderChoices([
-                  {
-                    label: 'Ra mở cửa gặp Bà Miller',
-                    costText: '-2 Độ No · +5 phút',
-                    highlight: true,
-                    onSelect: () => {
-                      const died = applySurvivalCost({ hunger: 2, minutes: 5 });
-                      if (!died) startMillerInteraction();
-                    }
-                  }
-                ]);
-              }, { compact: true });
+            label: 'Đi Tắm',
+            costText: bathCostLabel,
+            onSelect: async () => {
+              const cost = gameState.flags.tookBath
+                ? { hunger: 2, minutes: 8 }
+                : { hunger: 4, minutes: 15 };
+              const died = applySurvivalCost(cost);
+              if (died) return;
+              await runBathSequence();
+            }
+          },
+          {
+            label: 'Quay lại phòng',
+            costText: '+1 phút',
+            onSelect: async () => {
+              const died = applySurvivalCost({ hunger: 0, minutes: 1 });
+              if (died) return;
+              await playBlinkSceneTransition('img3', 'Phòng số 14 · Khu Phía Tây Tingen');
+              showRoomReadyToLeave(true);
             }
           }
         ]);
       }
 
-      function startMillerInteraction() {
-        gameState.stage = 'miller_scene';
-        gameState.flags.millerAnswered = true;
-        el.sceneLocationText.textContent = 'Cửa phòng số 14 · Gặp Bà chủ trọ Miller';
+      /** Sự kiện Đi Tắm tại phòng tắm chung cuối hành lang (có hiệu ứng nhắm mắt mở mắt) */
+      async function runBathSequence() {
+        const firstBath = !gameState.flags.tookBath;
+        gameState.flags.tookBath = true;
 
-        startDialogueQueue([
-          {
-            speaker: 'Bà Miller',
-            text: 'Bạn hé mở cánh cửa gỗ. Bà Miller tay cầm đèn bão, tay kia xách giỏ bánh tỏa mùi thơm nóng hổi: “May là cậu còn thức! Tiền trọ tuần này quá hạn 4 Sole rồi đấy. À, dưới bếp tôi còn dư bánh nhân thịt nóng 15 Penny một cái, cậu có mua lót dạ luôn không?”',
-            autoTriggerOnEnd: true
-          }
-        ], () => {
-          showMillerChoices();
+        // Nhắm mắt chuyển cảnh sang cảm giác tắm nước mát rồi mở mắt trở lại hành lang
+        await playBlinkSceneTransition('img5', 'Phòng tắm chung · Tầng 3', {
+          closeMs: 560,
+          holdMs: 750,
+          peekMs: 280,
+          openMs: 920
+        });
+
+        const sanityGain = firstBath ? 12 : 4;
+        const prevS = gameState.sanity;
+        gameState.sanity = Math.min(100, gameState.sanity + sanityGain);
+        const actualGain = gameState.sanity - prevS;
+        updateHUD();
+        if (actualGain > 0) {
+          showToast(`Sảng khoái hơn nhiều: +${actualGain} Tinh Thần`, 'positive');
+        }
+        el.sceneLocationText.textContent = 'Hành lang tầng 3 · Nhà trọ Khu Phía Tây';
+        autoSaveQuiet();
+
+        const bathLines = firstBath
+          ? [
+              {
+                speaker: 'Dẫn chuyện',
+                text: 'Bạn rẽ vào phòng tắm chung cuối hành lang. Dòng nước mát lạnh từ vòi đồng cũ kỹ cuốn trôi lớp mồ hôi lạnh và cơn ê ẩm nặng nề sau gáy.'
+              },
+              {
+                speaker: '{{NAME}} (Nội tâm)',
+                text: '“Tỉnh táo hơn hẳn rồi... Đầu óc không còn quay cuồng như lúc mới thức dậy nữa.” Bạn lau khô mặt rồi bước trở lại hành lang tầng ba.',
+                autoTriggerOnEnd: true
+              }
+            ]
+          : [
+              {
+                speaker: 'Dẫn chuyện',
+                text: 'Bạn tạt thêm vài vốc nước lạnh lên mặt trong phòng tắm chung để giữ sự tỉnh táo giữa đêm khuya, rồi quay ra hành lang tầng ba.',
+                autoTriggerOnEnd: true
+              }
+            ];
+
+        startDialogueQueue(bathLines, () => {
+          showHallwayChoices();
         });
       }
 
-      function showMillerChoices() {
-        const list = [];
-
-        if (!gameState.flags.millerRentPaid) {
-          list.push({
-            label: 'Trả tiền trọ quá hạn',
-            moneyCost: { pounds: 0, soles: 4, pennies: 0 },
-            highlight: true,
-            onSelect: () => {
-              if (!spendMoney(0, 4, 0)) return;
-              gameState.flags.millerRentPaid = true;
-              const died = applySurvivalCost({ hunger: 1, minutes: 3 });
-              if (died) return;
-              addClue('clue_miller_paid');
-              autoSaveQuiet();
-
-              startDialogueQueue([
-                {
-                  speaker: 'Bà Miller',
-                  text: 'Bà Miller kiểm tra số tiền thừa cẩn thận rồi gật đầu dịu giọng: “Sòng phẳng lắm! Tiện thể nhắc cậu một câu: tối qua có gã đeo kính gọng vàng cứ lảng vảng đầu cầu thang hỏi thăm phòng số 14 đấy. Đêm hôm cẩn thận!”',
-                  autoTriggerOnEnd: true
-                }
-              ], () => showMillerChoices());
-            }
-          });
+      /** Chuyển cảnh nhắm mắt mở mắt tới Cửa chính nhà trọ (Ảnh 2: 1000050692.jpg) */
+      async function enterInnExitScene(useBlink = true) {
+        if (useBlink) {
+          await playBlinkSceneTransition('img6', 'Cửa chính tầng trệt · Nhà trọ Khu Phía Tây');
+        } else {
+          resetCameraZoom();
+          setSceneImage('img6', 'Cửa chính tầng trệt · Nhà trọ Khu Phía Tây');
+          el.cameraRig.className = 'eye-clear';
+          updateHotspotPinsVisibility(false);
         }
 
-        if (!gameState.flags.millerPieBought) {
-          list.push({
-            label: 'Mua bánh nhân thịt nóng',
-            moneyCost: { pounds: 0, soles: 0, pennies: 15 },
-            onSelect: () => {
-              if (!spendMoney(0, 0, 15)) return;
-              gameState.flags.millerPieBought = true;
-              const died = applySurvivalCost({ hunger: 1, minutes: 2 });
-              if (died) return;
-              addItemToInventory('hot_meat_pie', 1);
-              autoSaveQuiet();
+        gameState.stage = 'inn_exit';
+        gameState.flags.visitedInnExit = true;
+        autoSaveQuiet();
 
-              startDialogueQueue([
-                {
-                  speaker: 'Hệ thống',
-                  text: 'Bạn nhận chiếc [Bánh nhân thịt nóng (+35 Độ No, +5 Tinh Thần)] bọc giấy dầu và cất vào Túi Hành Trang.',
-                  autoTriggerOnEnd: true
-                }
-              ], () => showMillerChoices());
-            }
-          });
-        }
-
-        list.push({
-          label: 'Khép cửa lại · Chuẩn bị Chương 1',
-          costText: '+2 phút',
-          onSelect: () => {
-            applySurvivalCost({ hunger: 0, minutes: 2 });
-            saveGame(true);
-            showPostMillerExploreBar();
-          }
-        });
-
-        renderChoices(list);
-      }
-
-      function showPostMillerExploreBar() {
-        gameState.stage = 'miller_done';
-        el.sceneLocationText.textContent = 'Phòng số 14 · Sẵn sàng cho Chương 1';
         startDialogueQueue([
           {
             speaker: 'Dẫn chuyện',
-            text: 'Cánh cửa khép lại, trả căn phòng số 14 về với ánh trăng đỏ và màn sương đêm Tingen. Đồng hồ đang nhích dần về phía cuộc hẹn 02:00 tại Quán rượu Mỏ Neo Gỉ...'
+            text: 'Bạn men theo cầu thang gỗ tối om xuống tới sảnh tầng trệt. Trước mắt là cánh cửa gỗ lắp kính hai cánh đã cài chốt sắt, ngọn đèn dầu bên tường soi rõ những mảng vữa bong tróc.'
           },
           {
-            speaker: 'Hệ thống',
-            text: '✦ KẾT THÚC CHƯƠNG MỞ ĐẦU: DƯ ÂM TINGEN. Bạn vẫn có thể mở 📖 Bút Ký, 🚪 Mở Tủ, kiểm tra Túi Hành Trang & Tiền Tệ hoặc lưu tiến độ chờ Chương 1!',
+            speaker: 'Dẫn chuyện',
+            text: 'Xuyên qua ô kính mờ, vầng trăng đỏ rực treo lơ lửng ngay trên con phố Khu Phía Tây Tingen chìm trong làn sương đêm dày đặc...',
             autoTriggerOnEnd: true
           }
         ], () => {
-          renderChoices([
-            {
-              label: 'Chơi lại từ đầu (00:00)',
-              costText: 'Khởi động lại',
-              onSelect: () => {
-                const keptName = gameState.name;
-                gameState = createInitialState(keptName);
-                launchNewGameFromStart(false);
-              }
-            }
-          ]);
+          showInnExitChoices();
         });
+      }
+
+      function showInnExitChoices() {
+        gameState.stage = 'inn_exit';
+        renderChoices([
+          {
+            label: 'Đẩy cửa bước ra phố Tingen',
+            costText: 'Chương tiếp theo',
+            highlight: true,
+            onSelect: () => {
+              saveGame(true);
+              startDialogueQueue([
+                {
+                  speaker: 'Hệ thống',
+                  text: '✦ Bạn đặt tay lên chốt sắt lạnh buốt của cánh cửa chính nhà trọ. Hành trình ngoài đường phố Khu Phía Tây Tingen sẽ tiếp tục ở bản cập nhật bối cảnh tiếp theo! (Tiến độ đã được tự động lưu.)',
+                  autoTriggerOnEnd: true
+                }
+              ], () => {
+                showInnExitChoices();
+              });
+            }
+          },
+          {
+            label: 'Quay lại hành lang tầng 3',
+            costText: '-1 Độ No · +2 phút',
+            onSelect: async () => {
+              const died = applySurvivalCost({ hunger: 1, minutes: 2 });
+              if (died) return;
+              await enterHallwayScene(true);
+            }
+          }
+        ]);
       }
 
       /* =======================================================================
@@ -3500,7 +3684,11 @@
           if (!raw) return false;
           const parsed = JSON.parse(raw);
           if (!parsed || !parsed.name) return false;
-          gameState = Object.assign(createInitialState(parsed.name), parsed);
+          const base = createInitialState(parsed.name);
+          gameState = Object.assign(base, parsed);
+          gameState.flags = Object.assign(base.flags, parsed.flags || {});
+          gameState.completedPins = Object.assign(base.completedPins, parsed.completedPins || {});
+          gameState.unlockedButtons = Object.assign(base.unlockedButtons, parsed.unlockedButtons || {});
           gameState.isGameOver = false;
           return true;
         } catch (e) {
@@ -3558,6 +3746,15 @@
                 }
               ]);
             });
+          } else if (gameState.stage === 'hallway') {
+            enterHallwayScene(false);
+          } else if (gameState.stage === 'inn_exit') {
+            enterInnExitScene(false);
+          } else if (gameState.stage === 'room_ready_leave') {
+            resetCameraZoom();
+            setSceneImage('img3', 'Phòng số 14 · Khu Phía Tây Tingen');
+            el.cameraRig.className = 'eye-clear';
+            showRoomReadyToLeave(false);
           } else {
             enterRoomOverviewPhaseC(false);
           }
