@@ -679,7 +679,7 @@
     }
 
     /* =========================================================================
-       7. NGĂN KÉO TRẠNG THÁI TRƯỢT BÊN MÉP TRÁI (MẶC ĐỊNH ĐÓNG)
+       7. NGĂN KÉO BẢNG TRẠNG THÁI PHONG CÁCH HUYỀN BÍ (OCCULT VICTORIAN)
        ========================================================================= */
     #status-drawer {
       position: fixed;
@@ -689,35 +689,173 @@
       width: var(--drawer-w);
       z-index: 38;
       transform: translateX(-100%);
-      transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: transform;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(92, 46, 118, 0.22) 0%, transparent 48%),
+        radial-gradient(circle at 86% 88%, rgba(140, 29, 36, 0.22) 0%, transparent 46%),
+        linear-gradient(180deg, #130d15 0%, #0d0910 52%, #08060a 100%);
+      border-right: 1.5px solid rgba(206, 168, 102, 0.58);
+      box-shadow:
+        inset -1px 0 0 rgba(240, 212, 152, 0.14),
+        inset 0 0 34px rgba(0, 0, 0, 0.78),
+        10px 0 38px rgba(0, 0, 0, 0.9);
     }
     #status-drawer.drawer-open { transform: translateX(0); }
+
+    .mystic-drawer-watermark {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.085;
+      z-index: 0;
+    }
+
+    .mystic-divider {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: rgba(212, 174, 108, 0.72);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+    }
+    .mystic-divider::before,
+    .mystic-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201, 162, 94, 0.55), transparent);
+    }
+
+    .mystic-card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(22, 16, 26, 0.86) 0%, rgba(12, 9, 15, 0.94) 100%);
+      border: 1px solid rgba(201, 162, 94, 0.34);
+      border-radius: 10px;
+      box-shadow:
+        inset 0 1px 0 rgba(238, 209, 153, 0.1),
+        inset 0 0 18px rgba(0, 0, 0, 0.55),
+        0 4px 14px rgba(0, 0, 0, 0.48);
+    }
+    .mystic-card::before,
+    .mystic-card::after {
+      content: '';
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .mystic-card::before {
+      top: 3px; left: 3px;
+      border-top: 1px solid rgba(226, 189, 122, 0.75);
+      border-left: 1px solid rgba(226, 189, 122, 0.75);
+    }
+    .mystic-card::after {
+      bottom: 3px; right: 3px;
+      border-bottom: 1px solid rgba(226, 189, 122, 0.75);
+      border-right: 1px solid rgba(226, 189, 122, 0.75);
+    }
+
+    .mystic-avatar-seal {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      flex-shrink: 0;
+      background: radial-gradient(circle at 35% 30%, #2d2034 0%, #120c16 74%);
+      border: 1.5px solid rgba(218, 178, 108, 0.78);
+      box-shadow: 0 0 16px rgba(138, 98, 182, 0.25), inset 0 0 10px rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mystic-avatar-seal::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 999px;
+      border: 1px dashed rgba(201, 162, 94, 0.45);
+      pointer-events: none;
+    }
+
+    .mystic-gauge-track {
+      position: relative;
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #0b080e 0%, #19131d 100%);
+      border: 1px solid rgba(201, 162, 94, 0.36);
+      padding: 1.5px;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.82);
+    }
+
+    .mystic-coin-slot {
+      border-radius: 8px;
+      padding: 6px 4px;
+      box-shadow: inset 0 1px 0 rgba(255, 240, 200, 0.14), inset 0 -2px 6px rgba(0, 0, 0, 0.55);
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+    .mystic-coin-slot:hover {
+      transform: translateY(-1px);
+    }
+
+    .mystic-btn {
+      background: linear-gradient(180deg, rgba(35, 25, 38, 0.9) 0%, rgba(16, 11, 20, 0.96) 100%);
+      border: 1px solid rgba(201, 162, 94, 0.46);
+      color: #f0e2c8;
+      box-shadow: inset 0 1px 0 rgba(238, 209, 153, 0.16), 0 4px 12px rgba(0, 0, 0, 0.52);
+      transition: all 0.2s ease;
+    }
+    .mystic-btn:hover:not(:disabled) {
+      background: linear-gradient(180deg, rgba(56, 39, 58, 0.95) 0%, rgba(26, 17, 30, 0.98) 100%);
+      border-color: #f0d399;
+      color: #fffaf0;
+      box-shadow: 0 0 14px rgba(176, 134, 212, 0.24), 0 4px 14px rgba(0, 0, 0, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .mystic-clock-dial {
+      position: relative;
+      border-radius: 10px;
+      padding: 8px 10px;
+      text-align: center;
+      border: 1px solid rgba(212, 172, 102, 0.5);
+      background: radial-gradient(circle at 50% 0%, rgba(128, 30, 42, 0.24) 0%, rgba(11, 8, 14, 0.96) 76%);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 4px 14px rgba(0, 0, 0, 0.55);
+      transition: background 0.5s ease, border-color 0.5s ease;
+    }
+    .mystic-clock-dial.day-mode {
+      border-color: rgba(232, 204, 138, 0.62);
+      background: radial-gradient(circle at 50% 0%, rgba(212, 178, 112, 0.24) 0%, rgba(16, 13, 18, 0.96) 76%);
+    }
 
     #drawer-toggle-btn {
       position: absolute;
       left: 100%;
       top: 50%;
       transform: translateY(-50%);
-      width: 28px;
-      height: 74px;
-      border-radius: 0 10px 10px 0;
-      background: linear-gradient(90deg, rgba(22, 16, 15, 0.94) 0%, rgba(40, 30, 23, 0.94) 100%);
-      border: 1px solid rgba(201, 162, 94, 0.68);
+      width: 30px;
+      height: 82px;
+      border-radius: 0 12px 12px 0;
+      background: linear-gradient(90deg, rgba(20, 14, 24, 0.96) 0%, rgba(44, 31, 40, 0.94) 100%);
+      border: 1.5px solid rgba(212, 172, 102, 0.72);
       border-left: none;
-      color: #f2d89c;
+      color: #f4daa0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 4px;
       cursor: pointer;
-      box-shadow: 4px 0 18px rgba(0, 0, 0, 0.65);
+      box-shadow: 5px 0 22px rgba(0, 0, 0, 0.74), inset -1px 0 6px rgba(238, 209, 153, 0.16);
       transition: width 0.2s ease, background 0.2s ease, opacity 0.35s ease;
     }
     #drawer-toggle-btn:hover {
-      width: 32px;
-      background: linear-gradient(90deg, #2d221b 0%, #493627 100%);
+      width: 34px;
+      background: linear-gradient(90deg, #271a2d 0%, #4e3440 100%);
     }
     #drawer-arrow-icon { transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
     #status-drawer.drawer-open #drawer-arrow-icon { transform: rotate(180deg); }
@@ -726,8 +864,8 @@
       position: fixed;
       inset: 0;
       z-index: 34;
-      background: rgba(6, 5, 8, 0.48);
-      backdrop-filter: blur(1.5px);
+      background: rgba(6, 5, 10, 0.52);
+      backdrop-filter: blur(2px);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.28s ease;
@@ -974,6 +1112,259 @@
       .diary-page-right { padding-left: 13px; }
       .diary-page-inner { padding: 7px 8px 5px 8px; }
       .diary-nav-btn { width: 30px; height: 50px; font-size: 19px; border-radius: 8px; }
+    }
+
+
+    /* =========================================================================
+       10. GIAO DIỆN TỦ QUẦN ÁO CŨ CHÂN THẬT (CÁNH GỖ MỞ 3D + KHOANG TỦ THẬT)
+       ========================================================================= */
+    .wardrobe-shell {
+      position: relative;
+      width: min(94vw, 720px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      perspective: 1400px;
+    }
+
+    .wardrobe-cornice {
+      width: 103%;
+      height: 16px;
+      border-radius: 6px 6px 2px 2px;
+      background: linear-gradient(180deg, #4b3120 0%, #2b1a10 55%, #190e08 100%);
+      border: 1px solid rgba(168, 124, 72, 0.45);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.75), inset 0 2px 0 rgba(214, 170, 112, 0.22);
+      position: relative;
+      z-index: 12;
+    }
+
+    .wardrobe-cabinet {
+      position: relative;
+      width: 100%;
+      border-radius: 4px 4px 10px 10px;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          #20140d 0px,
+          #251810 46px,
+          #160d08 47px,
+          #1b110b 49px
+        );
+      border: 7px solid #2f1d13;
+      outline: 1.5px solid rgba(182, 138, 78, 0.42);
+      box-shadow:
+        inset 0 0 60px rgba(0, 0, 0, 0.92),
+        inset 0 18px 28px rgba(0, 0, 0, 0.8),
+        0 26px 65px rgba(0, 0, 0, 0.92);
+      overflow: visible;
+      transform-style: preserve-3d;
+    }
+
+    /* Ánh sáng mờ hắt vào trong lòng tủ (đêm ánh trăng đỏ / ngày ánh nắng mờ sương) */
+    .wardrobe-ambient-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      background: radial-gradient(ellipse at 24% 18%, rgba(196, 86, 62, 0.22) 0%, rgba(112, 42, 34, 0.08) 46%, rgba(4, 3, 4, 0.56) 100%);
+      transition: background 0.5s ease;
+    }
+    .wardrobe-cabinet.wardrobe-daylight .wardrobe-ambient-glow {
+      background: radial-gradient(ellipse at 24% 18%, rgba(236, 212, 168, 0.22) 0%, rgba(176, 148, 106, 0.08) 46%, rgba(8, 6, 6, 0.48) 100%);
+    }
+
+    /* Hai cánh cửa tủ gỗ cổ mở 3D sang hai bên */
+    .wardrobe-doors-layer {
+      position: absolute;
+      inset: -2px;
+      z-index: 24;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      pointer-events: auto;
+      perspective: 1400px;
+    }
+    .wardrobe-cabinet.wardrobe-doors-open .wardrobe-doors-layer {
+      pointer-events: none;
+    }
+
+    .wardrobe-door {
+      position: relative;
+      height: 100%;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 224, 180, 0.03) 0px,
+          rgba(255, 224, 180, 0.03) 2px,
+          transparent 2px,
+          transparent 14px
+        ),
+        linear-gradient(160deg, #432b1c 0%, #2a1a11 52%, #1d110b 100%);
+      border: 2px solid #180e09;
+      box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.72), 0 12px 30px rgba(0, 0, 0, 0.85);
+      backface-visibility: hidden;
+      transition: transform 0.66s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px;
+    }
+    .wardrobe-door-left {
+      transform-origin: left center;
+      border-right: 1.5px solid #0d0705;
+    }
+    .wardrobe-door-right {
+      transform-origin: right center;
+      border-left: 1.5px solid #0d0705;
+    }
+
+    .wardrobe-cabinet.wardrobe-doors-open .wardrobe-door-left {
+      transform: rotateY(-108deg);
+      opacity: 0.14;
+    }
+    .wardrobe-cabinet.wardrobe-doors-open .wardrobe-door-right {
+      transform: rotateY(108deg);
+      opacity: 0.14;
+    }
+
+    .wardrobe-door-panel {
+      flex: 1;
+      border: 2px solid rgba(15, 8, 5, 0.78);
+      box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(196, 152, 102, 0.16);
+      border-radius: 3px;
+      background: linear-gradient(145deg, rgba(84, 58, 40, 0.25) 0%, rgba(28, 17, 11, 0.35) 100%);
+    }
+
+    .wardrobe-knob {
+      position: absolute;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      transform: translateY(-50%);
+      background: radial-gradient(circle at 32% 32%, #f0cf88 0%, #9b7332 62%, #4a3312 100%);
+      border: 1px solid #301f09;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    }
+    .wardrobe-door-left .wardrobe-knob { right: 10px; }
+    .wardrobe-door-right .wardrobe-knob { left: 10px; }
+
+    /* Nội thất thực tế bên trong tủ */
+    .wardrobe-interior {
+      position: relative;
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100dvh - 116px);
+      overflow-y: auto;
+    }
+
+    /* Thanh treo quần áo bằng sắt cũ */
+    .wardrobe-rail-bar {
+      height: 8px;
+      margin: 12px 14px 0 14px;
+      border-radius: 99px;
+      background: linear-gradient(180deg, #7c6c5e 0%, #3d332c 55%, #1d1714 100%);
+      border: 1px solid rgba(220, 194, 158, 0.22);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.78);
+    }
+
+    /* Tấm kệ gỗ giữa tủ */
+    .wardrobe-wood-shelf {
+      height: 11px;
+      width: 100%;
+      background: linear-gradient(180deg, #543723 0%, #352114 60%, #1d110a 100%);
+      border-top: 1px solid rgba(214, 172, 118, 0.28);
+      border-bottom: 2px solid #0e0805;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.82);
+    }
+
+    /* Thẻ vật phẩm đặt thực tế trong tủ */
+    .wardrobe-object-btn {
+      position: relative;
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: linear-gradient(180deg, rgba(38, 26, 18, 0.62) 0%, rgba(18, 12, 9, 0.78) 100%);
+      border: 1px solid rgba(201, 162, 94, 0.28);
+      transition: all 0.22s ease;
+      text-align: left;
+      cursor: pointer;
+    }
+    .wardrobe-object-btn:hover:not(:disabled) {
+      background: linear-gradient(180deg, rgba(58, 39, 26, 0.82) 0%, rgba(28, 18, 12, 0.9) 100%);
+      border-color: rgba(238, 209, 153, 0.78);
+      box-shadow: 0 0 22px rgba(201, 162, 94, 0.26), 0 8px 18px rgba(0, 0, 0, 0.65);
+      transform: translateY(-2px);
+    }
+    .wardrobe-object-btn.is-taken {
+      background: rgba(14, 10, 8, 0.42);
+      border-style: dashed;
+      border-color: rgba(154, 126, 86, 0.24);
+      cursor: default;
+      opacity: 0.72;
+    }
+
+    @keyframes gentleSway {
+      0%, 100% { transform: rotate(-1.2deg); }
+      50%      { transform: rotate(1.2deg); }
+    }
+    .coat-sway {
+      transform-origin: top center;
+      animation: gentleSway 4.2s ease-in-out infinite;
+    }
+
+    @keyframes keyGlint {
+      0%, 100% { filter: drop-shadow(0 0 3px rgba(238, 209, 153, 0.35)); }
+      50%      { filter: drop-shadow(0 0 10px rgba(250, 224, 146, 0.88)); }
+    }
+    .key-glint { animation: keyGlint 2.6s ease-in-out infinite; }
+
+    /* Đáy tủ & Tấm ván lỏng có thể cạy ra */
+    .wardrobe-floor-zone {
+      position: relative;
+      padding: 12px 14px 14px 14px;
+      background:
+        repeating-linear-gradient(
+          180deg,
+          #19100a 0px,
+          #22160e 16px,
+          #0d0805 17px
+        );
+      border-top: 2px solid #0d0704;
+    }
+
+    .wardrobe-loose-plank {
+      position: relative;
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: linear-gradient(135deg, #3c2618 0%, #27180f 60%, #1c1009 100%);
+      border: 1.5px solid rgba(206, 164, 96, 0.52);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.78), inset 0 1px 0 rgba(242, 206, 144, 0.2);
+      transform: rotate(-0.6deg);
+      transition: transform 0.35s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .wardrobe-loose-plank:hover {
+      transform: rotate(-1.2deg) translateY(-1px);
+      border-color: #f3d796;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.85), 0 0 18px rgba(201, 162, 94, 0.24);
+    }
+
+    .wardrobe-hidden-hollow {
+      position: relative;
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: radial-gradient(circle at 30% 50%, #18131d 0%, #090609 78%);
+      border: 1px solid rgba(132, 186, 144, 0.45);
+      box-shadow: inset 0 6px 22px rgba(0, 0, 0, 0.95);
+    }
+
+    @media (max-height: 500px) {
+      .wardrobe-shell { gap: 5px; }
+      .wardrobe-cornice { height: 11px; }
+      .wardrobe-cabinet { border-width: 5px; }
+      .wardrobe-interior { max-height: calc(100dvh - 82px); }
+      .wardrobe-object-btn { padding: 7px 9px; }
+      .wardrobe-floor-zone { padding: 8px 10px 10px 10px; }
     }
 
     #portrait-tip { display: none; }
@@ -1235,11 +1626,23 @@
       <div id="drawer-backdrop" aria-hidden="true"></div>
 
       <!-- =====================================================================
-           4. NGĂN KÉO BẢNG TRẠNG THÁI BÊN MÉP TRÁI (MẶC ĐỊNH ĐÓNG)
+           4. NGĂN KÉO BẢNG TRẠNG THÁI PHONG CÁCH HUYỀN BÍ (KHÔNG HIỆN PHÀM NHÂN)
            ===================================================================== -->
-      <aside id="status-drawer" class="bg-gradient-to-b from-[#161010] via-[#100c0d] to-[#0a0809] border-r border-[#c9a25e]/50 flex flex-col justify-between shadow-[8px_0_32px_rgba(0,0,0,0.88)]" aria-label="Bảng Trạng Thái">
+      <aside id="status-drawer" class="flex flex-col justify-between" aria-label="Bảng Trạng Thái">
 
-        <!-- Nút gạt mũi tên gắn liền mép phải ngăn kéo -->
+        <!-- Hoa văn vòng tròn tinh bàn Huyền Bí chìm phía sau -->
+        <div class="mystic-drawer-watermark" aria-hidden="true">
+          <svg class="w-full h-full" viewBox="0 0 300 720" fill="none" stroke="#e4c27c" stroke-width="0.9">
+            <circle cx="150" cy="180" r="118" stroke-dasharray="4 6" />
+            <circle cx="150" cy="180" r="88" />
+            <polygon points="150,78 238,230 62,230" stroke-opacity="0.7" />
+            <polygon points="150,282 238,130 62,130" stroke-opacity="0.55" />
+            <circle cx="150" cy="540" r="96" stroke-dasharray="3 5" />
+            <line x1="150" y1="30" x2="150" y2="690" stroke-opacity="0.35" />
+          </svg>
+        </div>
+
+        <!-- Khóa đồng cổ kéo mở ngăn kéo -->
         <button
           id="drawer-toggle-btn"
           type="button"
@@ -1247,48 +1650,59 @@
           aria-label="Mở hoặc đóng Bảng Trạng Thái"
           aria-expanded="false"
         >
+          <span class="text-[9px] text-[#d5b36e]/80 leading-none">✦</span>
           <span id="drawer-alert-dot" class="hidden alert-dot bg-[#eed199] shadow-[0_0_8px_#eed199]"></span>
           <svg id="drawer-arrow-icon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="9 6 15 12 9 18" />
           </svg>
+          <span class="text-[9px] text-[#d5b36e]/80 leading-none">✦</span>
         </button>
 
-        <!-- Hồ sơ Tên & Tuổi -->
-        <div class="p-3 pb-2.5 border-b border-[#c9a25e]/28 shrink-0">
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-display text-xs uppercase tracking-[0.18em] text-[#e4c27c] font-bold">Bảng Trạng Thái</span>
-            <span class="text-[10px] px-2 py-0.5 rounded bg-[#241a16] border border-[#c9a25e]/36 text-[#d2b987]">Phàm Nhân</span>
+        <!-- ĐẦU NGĂN KÉO: TIÊU ĐỀ HUYỀN BÍ & ẤN KÝ HỒ SƠ (ĐÃ BỎ NHÃN PHÀM NHÂN) -->
+        <div class="relative z-10 p-3 pb-2.5 shrink-0">
+          <div class="flex items-center justify-center gap-2 mb-2">
+            <span class="text-[10px] text-[#c9a25e]">✦</span>
+            <span class="font-display text-[12.5px] uppercase tracking-[0.22em] text-[#f0d394] font-bold drop-shadow-[0_0_8px_rgba(201,162,94,0.35)]">
+              Bảng Trạng Thái
+            </span>
+            <span class="text-[10px] text-[#c9a25e]">✦</span>
           </div>
-          <div class="flex items-center gap-2.5 bg-[#0b080a]/92 border border-[#c9a25e]/26 rounded-lg p-2">
-            <div class="w-9 h-9 rounded-full shrink-0 bg-gradient-to-b from-[#2c2019] to-[#120d0d] border border-[#c9a25e]/72 flex items-center justify-center">
-              <svg class="w-6 h-6 text-[#c9a25e]/90" viewBox="0 0 48 48" fill="currentColor">
+
+          <div class="mystic-divider mb-2.5"><span>◇</span></div>
+
+          <div class="mystic-card p-2.5 flex items-center gap-3">
+            <div class="mystic-avatar-seal">
+              <svg class="w-6 h-6 text-[#dfc082]" viewBox="0 0 48 48" fill="currentColor">
                 <circle cx="24" cy="17" r="7.5" />
                 <path d="M10 42 C10 31, 16 27, 24 27 C32 27, 38 31, 38 42 Z" />
               </svg>
             </div>
             <div class="min-w-0 flex-1 leading-snug">
-              <div class="text-[11px] text-[#a5957e] truncate">
-                Tên: <strong id="stat-name" class="text-xs text-[#f6e9d0]">---</strong>
+              <div class="text-[10.5px] uppercase tracking-wider text-[#9c8aa6] font-medium">
+                Danh Tính
               </div>
-              <div class="text-[11px] text-[#a5957e]">
-                Tuổi: <strong id="stat-age" class="text-[#e7d6b9]">22 tuổi</strong>
+              <div class="truncate font-display text-sm font-bold text-[#f7ebd1] tracking-wide" id="stat-name">---</div>
+              <div class="text-[11px] text-[#b8a790] mt-0.5">
+                Tuổi: <strong id="stat-age" class="text-[#ebd8b5] font-semibold">22 tuổi</strong>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Phần cuộn giữa: Độ No, Tinh Thần, Tiền tệ 3 mệnh giá & Hành động -->
-        <div class="p-3 space-y-2.5 overflow-y-auto flex-1">
+        <!-- PHẦN CUỘN GIỮA: SINH LỰC, TINH THẦN, TIỀN TỆ LOEN & CÔNG CỤ -->
+        <div class="relative z-10 px-3 pb-3 space-y-2.5 overflow-y-auto flex-1">
           <!-- Độ No & Tinh Thần -->
-          <div class="space-y-2.5 bg-[#0c090c]/88 border border-[#c9a25e]/24 rounded-lg p-2.5">
+          <div class="mystic-card p-2.5 space-y-2.5">
             <!-- Thanh Độ No -->
             <div>
               <div class="flex items-center justify-between text-[11.5px] mb-1">
-                <span class="font-semibold text-[#ecc67b]">Độ No</span>
-                <span id="hunger-text" class="text-[11px] font-mono font-semibold text-[#f2dfb7]">65/100</span>
+                <span class="font-display font-semibold tracking-wide text-[#f0cb7e] flex items-center gap-1.5">
+                  <span class="text-[9px] text-[#d69f44]">◈</span> Độ No
+                </span>
+                <span id="hunger-text" class="text-[11px] font-mono font-semibold text-[#f4e2bc]">65/100</span>
               </div>
-              <div id="hunger-bar-wrap" class="w-full h-2.5 bg-[#1b1412] rounded-full overflow-hidden border border-[#c9a25e]/36 p-[1px]">
-                <div id="hunger-bar" class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-[#b56a1d] via-[#d99536] to-[#f2c066]" style="width: 65%;"></div>
+              <div id="hunger-bar-wrap" class="mystic-gauge-track">
+                <div id="hunger-bar" class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-[#a65c17] via-[#d99536] to-[#f7cb74]" style="width: 65%;"></div>
               </div>
               <p id="hunger-warning" class="hidden text-[10px] text-[#f57c83] mt-1 font-medium">
                 ⚠ Sắp chết đói! Hãy mở Túi ăn thực phẩm ngay.
@@ -1298,85 +1712,85 @@
             <!-- Thanh Tinh Thần -->
             <div>
               <div class="flex items-center justify-between text-[11.5px] mb-1">
-                <span class="font-semibold text-[#c1adf2]">Tinh Thần</span>
-                <span id="sanity-text" class="text-[11px] font-mono font-semibold text-[#dfd6f7]">80/100</span>
+                <span class="font-display font-semibold tracking-wide text-[#ccb8fa] flex items-center gap-1.5">
+                  <span class="text-[9px] text-[#a78bfa]">✦</span> Tinh Thần
+                </span>
+                <span id="sanity-text" class="text-[11px] font-mono font-semibold text-[#e5ddfb]">80/100</span>
               </div>
-              <div class="w-full h-2.5 bg-[#161220] rounded-full overflow-hidden border border-[#8a70c9]/45 p-[1px]">
-                <div id="sanity-bar" class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-[#4b3878] via-[#705aa8] to-[#a18be0]" style="width: 80%;"></div>
+              <div class="mystic-gauge-track" style="border-color: rgba(154, 126, 214, 0.42);">
+                <div id="sanity-bar" class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-[#4b327d] via-[#7b5ec2] to-[#b8a0f5]" style="width: 80%;"></div>
               </div>
-              <p id="sanity-warning" class="hidden text-[10px] text-[#ceb5fa] mt-1 italic">
+              <p id="sanity-warning" class="hidden text-[10px] text-[#d4bdfc] mt-1 italic">
                 ✦ Văng vẳng tiếng thì thầm từ màn sương...
               </p>
             </div>
           </div>
 
           <!-- TIỀN TỆ LOEN 3 MỆNH GIÁ: BẢNG / SOLE / PENNY -->
-          <div class="bg-[#0c090c]/88 border border-[#c9a25e]/28 rounded-lg p-2.5">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="text-[10.5px] uppercase tracking-wider font-semibold text-[#dbba74]">Tiền Tệ Loen</span>
-              <span class="text-[9.5px] text-[#9b8c75]" title="1 Bảng = 12 Sole · 1 Sole = 20 Penny">1B=12S · 1S=20P</span>
+          <div class="mystic-card p-2.5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-display text-[11px] uppercase tracking-[0.14em] font-bold text-[#e3c27a]">Tiền Tệ Loen</span>
+              <span class="text-[9.5px] text-[#9b8c9d]" title="1 Bảng = 12 Sole · 1 Sole = 20 Penny">1B=12S · 1S=20P</span>
             </div>
             <div class="grid grid-cols-3 gap-1.5 text-center">
-              <!-- Bảng -->
-              <div class="rounded-md bg-gradient-to-b from-[#2b2210] to-[#17120a] border border-[#e3ba59]/55 py-1.5 px-1">
+              <div class="mystic-coin-slot bg-gradient-to-b from-[#2f2310] to-[#171109] border border-[#e3ba59]/55">
                 <div class="flex items-center justify-center gap-1">
-                  <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#ffe28a] to-[#b58124] border border-[#fff2bd]/60 inline-block"></span>
-                  <span id="coin-pounds" class="font-mono text-xs font-bold text-[#fae099]">1</span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#ffe699] to-[#b37d1e] border border-[#fff3c4]/70 inline-block"></span>
+                  <span id="coin-pounds" class="font-mono text-xs font-bold text-[#fce4a0]">1</span>
                 </div>
-                <div class="text-[9.5px] text-[#d3b673] mt-0.5 font-medium">Bảng</div>
+                <div class="text-[9.5px] text-[#d8bc7a] mt-0.5 font-medium">Bảng</div>
               </div>
-              <!-- Sole -->
-              <div class="rounded-md bg-gradient-to-b from-[#20232a] to-[#121419] border border-[#b7c0cf]/50 py-1.5 px-1">
+              <div class="mystic-coin-slot bg-gradient-to-b from-[#232530] to-[#12131a] border border-[#bcc6d9]/50">
                 <div class="flex items-center justify-center gap-1">
-                  <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#eef2f7] to-[#7d8799] border border-white/55 inline-block"></span>
-                  <span id="coin-soles" class="font-mono text-xs font-bold text-[#e2e7f0]">2</span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#f2f6fc] to-[#7c879c] border border-white/60 inline-block"></span>
+                  <span id="coin-soles" class="font-mono text-xs font-bold text-[#e6ecf5]">2</span>
                 </div>
-                <div class="text-[9.5px] text-[#aeb7c7] mt-0.5 font-medium">Sole</div>
+                <div class="text-[9.5px] text-[#b4bfd1] mt-0.5 font-medium">Sole</div>
               </div>
-              <!-- Penny -->
-              <div class="rounded-md bg-gradient-to-b from-[#291913] to-[#170f0c] border border-[#c97e53]/50 py-1.5 px-1">
+              <div class="mystic-coin-slot bg-gradient-to-b from-[#2c1a13] to-[#170e0b] border border-[#cf8357]/50">
                 <div class="flex items-center justify-center gap-1">
-                  <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#e69e73] to-[#874826] border border-[#f7c9ac]/45 inline-block"></span>
-                  <span id="coin-pennies" class="font-mono text-xs font-bold text-[#f0ba99]">12</span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#eba478] to-[#874724] border border-[#f8cdb2]/50 inline-block"></span>
+                  <span id="coin-pennies" class="font-mono text-xs font-bold text-[#f2be9c]">12</span>
                 </div>
-                <div class="text-[9.5px] text-[#c79374] mt-0.5 font-medium">Penny</div>
+                <div class="text-[9.5px] text-[#cd9878] mt-0.5 font-medium">Penny</div>
               </div>
             </div>
           </div>
 
-          <!-- Nút chức năng -->
+          <!-- HÀNH TRANG & LƯU TRỮ -->
           <div class="space-y-1.5">
-            <button id="btn-open-inventory" type="button" class="w-full py-2 px-3 rounded-lg btn-brass flex items-center justify-between text-xs cursor-pointer">
+            <button id="btn-open-inventory" type="button" class="w-full py-2 px-3 rounded-lg mystic-btn flex items-center justify-between text-xs cursor-pointer">
               <span class="font-semibold">🎒 Túi Hành Trang</span>
               <span id="inventory-badge" class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-[#36261a] border border-[#c9a25e]/48 text-[#f2d699]">1</span>
             </button>
 
-            <button id="btn-open-notes" type="button" class="w-full py-2 px-3 rounded-lg btn-brass flex items-center justify-between text-xs cursor-pointer">
-              <span class="font-semibold">📜 Ghi Chép</span>
-              <span id="notes-badge" class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-[#241b16] border border-[#c9a25e]/36 text-[#d4bf98]">0</span>
+            <button id="btn-open-notes" type="button" class="w-full py-2 px-3 rounded-lg mystic-btn flex items-center justify-between text-xs cursor-pointer">
+              <span class="font-semibold">📜 Sổ Ghi Chép</span>
+              <span id="notes-badge" class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-[#241b28] border border-[#9f82d4]/40 text-[#dcd0f7]">0</span>
             </button>
 
             <div class="grid grid-cols-2 gap-1.5 pt-0.5">
-              <button id="btn-save" type="button" class="py-1.5 px-2 rounded-lg btn-brass text-[11.5px] font-semibold cursor-pointer">
+              <button id="btn-save" type="button" class="py-1.5 px-2 rounded-lg mystic-btn text-[11.5px] font-semibold cursor-pointer">
                 💾 Lưu Game
               </button>
-              <button id="btn-reset" type="button" class="py-1.5 px-2 rounded-lg bg-[#271214] hover:bg-[#3c191d] border border-[#a83b42]/50 text-[11.5px] font-semibold text-[#efb8bc] transition cursor-pointer">
+              <button id="btn-reset" type="button" class="py-1.5 px-2 rounded-lg bg-[#271117] hover:bg-[#3e1922] border border-[#b33d47]/52 text-[11.5px] font-semibold text-[#f1bcc0] transition cursor-pointer">
                 🔄 Chơi Lại
               </button>
             </div>
           </div>
         </div>
 
-        <!-- ĐÁY NGĂN KÉO CỐ ĐỊNH: ĐỒNG HỒ & NGÀY THÁNG (00:00 — NGÀY 3 THÁNG 5, NĂM 1349) -->
-        <div class="p-2.5 border-t border-[#c9a25e]/40 bg-gradient-to-t from-[#070507] to-[#120e0d] shrink-0">
-          <div class="rounded-lg border border-[#c9a25e]/45 bg-[#0a080a] px-2.5 py-2 text-center shadow-inner">
-            <div class="text-[9.5px] uppercase tracking-[0.2em] text-[#a79373] font-medium">
-              Kỷ Nguyên Thứ Năm
+        <!-- ĐÁY NGĂN KÉO CỐ ĐỊNH: ĐỒNG HỒ BỎ TÚI HUYỀN BÍ & CHU KỲ NGÀY/ĐÊM -->
+        <div class="relative z-10 p-2.5 border-t border-[#c9a25e]/34 bg-gradient-to-t from-[#060408] to-transparent shrink-0">
+          <div id="status-clock-dial" class="mystic-clock-dial">
+            <div class="flex items-center justify-between text-[9px] uppercase tracking-[0.16em] text-[#b39d7d] font-medium mb-0.5">
+              <span>Kỷ Nguyên Thứ Năm</span>
+              <span id="clock-period-badge" class="text-[#e78f95] font-semibold">☾ Trời Tối</span>
             </div>
-            <div id="clock-time" class="font-display text-2xl font-bold tracking-widest text-[#f5da9e] leading-tight">
+            <div id="clock-time" class="font-display text-2xl font-bold tracking-widest text-[#f6dc9f] leading-tight drop-shadow-[0_0_10px_rgba(201,162,94,0.3)]">
               00:00
             </div>
-            <div id="clock-date" class="text-[11px] font-medium text-[#d8c7a9]">
+            <div id="clock-date" class="text-[11px] font-medium text-[#d8c8ae]">
               Ngày 3 Tháng 5, Năm 1349
             </div>
           </div>
@@ -1500,19 +1914,68 @@
     </div>
 
     <!-- =======================================================================
-         7. MODAL MỞ TỦ QUẦN ÁO CŨ (MỞ BẤT KỲ LÚC NÀO QUA NÚT 🚪 MỞ TỦ)
+         7. MODAL MỞ TỦ QUẦN ÁO CŨ CHÂN THẬT (CÁNH GỖ MỞ 3D + KHOANG GỖ + VÁN LỎNG)
          ======================================================================= -->
-    <div id="wardrobe-modal" class="hidden fixed inset-0 z-50 bg-black/82 backdrop-blur-[2px] flex items-center justify-center p-3">
-      <div class="w-full max-w-xl max-h-[88dvh] bg-[#15100d] rounded-xl brass-frame brass-corner flex flex-col overflow-hidden">
-        <div class="flex items-center justify-between px-4 py-3 border-b border-[#c9a25e]/38 bg-[#1d1510] shrink-0">
-          <div>
-            <h2 class="font-display text-base sm:text-lg font-bold text-[#f2d79c]">🚪 Chiếc Tủ Quần Áo Cũ</h2>
-            <p class="text-[11px] text-[#aa987d]">Lấy vật phẩm vào Túi Hành Trang hoặc cạy tấm ván lỏng dưới đáy tủ.</p>
+    <div id="wardrobe-modal" class="hidden fixed inset-0 z-50 bg-black/86 backdrop-blur-[3px] flex items-center justify-center p-2 sm:p-4 overflow-hidden">
+      <div class="wardrobe-shell">
+        <!-- Thanh tiêu đề phía trên nóc tủ -->
+        <div class="w-full flex items-center justify-between gap-2 px-1">
+          <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-[#1a110c]/92 border border-[#c9a25e]/55 shadow-lg">
+            <span aria-hidden="true" class="text-sm">🚪</span>
+            <span class="font-display text-xs sm:text-sm font-bold tracking-wide text-[#f3dba3]">Chiếc Tủ Quần Áo Cũ · Phòng số 14</span>
           </div>
-          <button id="btn-close-wardrobe" type="button" class="w-8 h-8 rounded-lg bg-[#2b1f18] hover:bg-[#3f2c21] border border-[#c9a25e]/45 text-[#ebd4a6] flex items-center justify-center cursor-pointer">✕</button>
+          <button
+            id="btn-close-wardrobe"
+            type="button"
+            aria-label="Đóng Tủ"
+            class="px-3.5 py-1.5 rounded-full btn-crimson text-xs sm:text-sm font-display font-semibold flex items-center gap-1.5 cursor-pointer shadow-lg"
+          >
+            <span aria-hidden="true">✕</span>
+            <span>Đóng Tủ</span>
+          </button>
         </div>
-        <div id="wardrobe-items-list" class="p-3.5 sm:p-4 overflow-y-auto space-y-2.5 flex-1"></div>
-        <div id="wardrobe-secret-area" class="mx-4 mb-3.5 p-3 rounded-lg bg-[#1d1511] border border-[#c9a25e]/38 shrink-0"></div>
+
+        <!-- Nóc tủ phào chỉ Victorian -->
+        <div class="wardrobe-cornice" aria-hidden="true"></div>
+
+        <!-- Thân tủ gỗ cổ với 2 cánh mở 3D -->
+        <div id="wardrobe-cabinet" class="wardrobe-cabinet">
+          <div class="wardrobe-ambient-glow" aria-hidden="true"></div>
+
+          <!-- Hai cánh cửa gỗ mở ra 3D -->
+          <div class="wardrobe-doors-layer" aria-hidden="true">
+            <div class="wardrobe-door wardrobe-door-left">
+              <div class="wardrobe-door-panel mb-3"></div>
+              <div class="wardrobe-door-panel" style="flex: 0.55;"></div>
+              <span class="wardrobe-knob"></span>
+            </div>
+            <div class="wardrobe-door wardrobe-door-right">
+              <div class="wardrobe-door-panel mb-3"></div>
+              <div class="wardrobe-door-panel" style="flex: 0.55;"></div>
+              <span class="wardrobe-knob"></span>
+            </div>
+          </div>
+
+          <!-- Khoang bên trong tủ gỗ -->
+          <div class="wardrobe-interior">
+            <!-- Khoang trên: Thanh treo quần áo -->
+            <div class="wardrobe-rail-bar" aria-hidden="true"></div>
+            <div id="wardrobe-rail-zone" class="px-3.5 pt-2 pb-3"></div>
+
+            <!-- Kệ gỗ giữa -->
+            <div class="wardrobe-wood-shelf" aria-hidden="true"></div>
+            <div id="wardrobe-shelf-zone" class="px-3.5 py-3 grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+
+            <!-- Đáy tủ với tấm ván lỏng -->
+            <div id="wardrobe-secret-area" class="wardrobe-floor-zone"></div>
+
+            <!-- Thanh mô tả vật phẩm chân thực ở đáy tủ -->
+            <div id="wardrobe-inspect-bar" class="px-3.5 py-2 bg-[#110b08]/95 border-t border-[#c9a25e]/28 text-[11px] sm:text-xs text-[#cbb89b] flex items-center justify-between gap-2">
+              <span id="wardrobe-inspect-text" class="italic truncate">Chạm trực tiếp vào đồ vật bên trong tủ để cất vào Túi Hành Trang.</span>
+              <span class="text-[10px] text-[#9b8668] shrink-0">Mùi gỗ ẩm &amp; bụi cũ</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1678,7 +2141,7 @@
           'img5.jpg',
           'img5.png'
         ],
-        // Ảnh 6: Cửa chính tầng trệt nhà trọ nhìn ra phố Tingen (rời khỏi nhà trọ)
+        // Ảnh 6: Cửa chính tầng trệt nhà trọ nhìn ra phố Tingen (trời tối 18:00 - 06:00)
         img6: [
           '1000050692.jpg',
           'images/1000050692.jpg',
@@ -1688,7 +2151,41 @@
           'cuachinh.png',
           'img6.jpg',
           'img6.png'
+        ],
+        // Ảnh 3 Ban ngày (06:00 - 18:00): Giữa phòng số 14 trời sáng
+        img3_day: [
+          '1000050709.jpg',
+          'images/1000050709.jpg',
+          '1000050709.png',
+          'images/1000050709.png',
+          'phong_sang.jpg',
+          'phong_sang.png'
+        ],
+        // Ảnh 5 Ban ngày (06:00 - 18:00): Hành lang tầng 3 trời sáng
+        img5_day: [
+          '1000050706.jpg',
+          'images/1000050706.jpg',
+          '1000050706.png',
+          'images/1000050706.png',
+          'hanhlang_sang.jpg',
+          'hanhlang_sang.png'
+        ],
+        // Ảnh 6 Ban ngày (06:00 - 18:00): Trước cửa chính nhà trọ trời sáng
+        img6_day: [
+          '1000050707.jpg',
+          'images/1000050707.jpg',
+          '1000050707.png',
+          'images/1000050707.png',
+          'cuachinh_sang.jpg',
+          'cuachinh_sang.png'
         ]
+      };
+
+      /* Ánh xạ 3 cảnh chính theo chu kỳ ngày/đêm: 06:00–18:00 ảnh sáng, 18:00–06:00 ảnh tối */
+      const DAY_NIGHT_SCENE_MAP = {
+        img3: { night: 'img3', day: 'img3_day' },
+        img5: { night: 'img5', day: 'img5_day' },
+        img6: { night: 'img6', day: 'img6_day' }
       };
 
       function resolveAssetUrl(path) {
@@ -1705,12 +2202,16 @@
         img1: resolveAssetUrl(SCENE_CANDIDATES.img1[0]),
         img2: resolveAssetUrl(SCENE_CANDIDATES.img2[0]),
         img3: resolveAssetUrl(SCENE_CANDIDATES.img3[0]),
+        img3_day: resolveAssetUrl(SCENE_CANDIDATES.img3_day[0]),
         img4: resolveAssetUrl(SCENE_CANDIDATES.img4[0]),
         img5: resolveAssetUrl(SCENE_CANDIDATES.img5[0]),
-        img6: resolveAssetUrl(SCENE_CANDIDATES.img6[0])
+        img5_day: resolveAssetUrl(SCENE_CANDIDATES.img5_day[0]),
+        img6: resolveAssetUrl(SCENE_CANDIDATES.img6[0]),
+        img6_day: resolveAssetUrl(SCENE_CANDIDATES.img6_day[0])
       };
 
       let activeSceneKey = 'img1';
+      let activeBaseSceneKey = 'img1';
       let activeSceneAttempt = 0;
 
       /* Tự động kiểm tra và tải trước đúng đường dẫn ảnh hợp lệ cho cả 3 cảnh */
@@ -1736,7 +2237,7 @@
         }
         tryNext();
       }
-      ['img1', 'img2', 'img3', 'img4', 'img5', 'img6'].forEach(preloadSceneKey);
+      ['img1', 'img2', 'img3', 'img3_day', 'img4', 'img5', 'img5_day', 'img6', 'img6_day'].forEach(preloadSceneKey);
 
       /* =======================================================================
          PHẦN 2: DỮ LIỆU VẬT PHẨM, TRANG BÚT KÝ, MANH MỐI & HOTSPOTS
@@ -2083,6 +2584,8 @@
       let activeInvTab = 'food';
       let activeDiarySpread = 0;
       let onDiaryCloseCallback = null;
+      let onWardrobeCloseCallback = null;
+      let wardrobeCloseTimer = null;
       let isTheaterExpanded = false;
       let sceneExploreHintDismissed = false;
 
@@ -2149,6 +2652,8 @@
         coinPennies: document.getElementById('coin-pennies'),
         invBadge: document.getElementById('inventory-badge'),
         notesBadge: document.getElementById('notes-badge'),
+        statusClockDial: document.getElementById('status-clock-dial'),
+        clockPeriodBadge: document.getElementById('clock-period-badge'),
         clockTime: document.getElementById('clock-time'),
         clockDate: document.getElementById('clock-date'),
 
@@ -2182,8 +2687,11 @@
         diaryDots: document.getElementById('diary-dots'),
 
         wardrobeModal: document.getElementById('wardrobe-modal'),
+        wardrobeCabinet: document.getElementById('wardrobe-cabinet'),
+        wardrobeRailZone: document.getElementById('wardrobe-rail-zone'),
+        wardrobeShelfZone: document.getElementById('wardrobe-shelf-zone'),
+        wardrobeInspectText: document.getElementById('wardrobe-inspect-text'),
         btnCloseWardrobe: document.getElementById('btn-close-wardrobe'),
-        wardrobeItemsList: document.getElementById('wardrobe-items-list'),
         wardrobeSecretArea: document.getElementById('wardrobe-secret-area'),
 
         inventoryModal: document.getElementById('inventory-modal'),
@@ -2256,23 +2764,59 @@
         return null;
       }
 
+      /** Trả về true nếu đang là ban ngày (06:00 - 17:59), false nếu trời tối (18:00 - 05:59) */
+      function isDaytime() {
+        const h = (gameState && gameState.time) ? gameState.time.hour : 0;
+        return h >= 6 && h < 18;
+      }
+
+      function getBaseDayNightKey(key) {
+        if (!key) return null;
+        if (DAY_NIGHT_SCENE_MAP[key]) return key;
+        for (const baseKey of Object.keys(DAY_NIGHT_SCENE_MAP)) {
+          if (DAY_NIGHT_SCENE_MAP[baseKey].day === key || DAY_NIGHT_SCENE_MAP[baseKey].night === key) {
+            return baseKey;
+          }
+        }
+        return null;
+      }
+
+      function resolveTimeAwareSceneKey(key) {
+        const baseKey = getBaseDayNightKey(key);
+        if (!baseKey) return key;
+        return isDaytime() ? DAY_NIGHT_SCENE_MAP[baseKey].day : DAY_NIGHT_SCENE_MAP[baseKey].night;
+      }
+
       function setSceneImage(srcOrKey, locationTitle) {
         el.sceneImgFallback.classList.add('hidden');
         el.sceneImage.style.display = 'block';
-        const key = detectSceneKey(srcOrKey);
-        if (key) {
-          activeSceneKey = key;
-          const resolvedPrimary = SCENES_IMG[key];
-          const candidates = SCENE_CANDIDATES[key].map(resolveAssetUrl);
+        const rawKey = detectSceneKey(srcOrKey);
+        if (rawKey) {
+          const baseKey = getBaseDayNightKey(rawKey) || rawKey;
+          const timedKey = resolveTimeAwareSceneKey(baseKey);
+          activeBaseSceneKey = baseKey;
+          activeSceneKey = timedKey;
+          const resolvedPrimary = SCENES_IMG[timedKey];
+          const candidates = SCENE_CANDIDATES[timedKey].map(resolveAssetUrl);
           const matchedIdx = candidates.indexOf(resolvedPrimary);
           activeSceneAttempt = matchedIdx >= 0 ? matchedIdx : 0;
           el.sceneImage.src = resolvedPrimary;
         } else {
+          activeBaseSceneKey = null;
           activeSceneKey = null;
           activeSceneAttempt = 0;
           el.sceneImage.src = resolveAssetUrl(srcOrKey);
         }
         if (locationTitle) el.sceneLocationText.textContent = locationTitle;
+      }
+
+      /** Đồng bộ tức thì ảnh sáng/tối nếu đồng hồ vừa bước qua mốc 06:00 hoặc 18:00 */
+      function syncActiveSceneDayNight() {
+        if (!activeBaseSceneKey || !DAY_NIGHT_SCENE_MAP[activeBaseSceneKey]) return;
+        const expectedKey = resolveTimeAwareSceneKey(activeBaseSceneKey);
+        if (expectedKey !== activeSceneKey) {
+          setSceneImage(activeBaseSceneKey);
+        }
       }
 
       function resetCameraZoom() {
@@ -2439,6 +2983,7 @@
 
       function advanceTime(minutes) {
         if (!minutes || minutes <= 0) return;
+        const wasDay = isDaytime();
         const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         gameState.time.minute += minutes;
         while (gameState.time.minute >= 60) {
@@ -2457,6 +3002,14 @@
               }
             }
           }
+        }
+        const nowDay = isDaytime();
+        if (wasDay !== nowDay) {
+          syncActiveSceneDayNight();
+          showToast(
+            nowDay ? '☀ Trời đã sáng (06:00–18:00).' : '☾ Màn đêm Trăng Đỏ buông xuống (18:00–06:00).',
+            nowDay ? 'gold' : 'sanity'
+          );
         }
       }
 
@@ -2580,8 +3133,21 @@
         const totalInv = gameState.inventory.reduce((sum, i) => sum + i.qty, 0);
         el.invBadge.textContent = totalInv;
         el.notesBadge.textContent = gameState.clues.length;
+        const daytimeNow = isDaytime();
         el.clockTime.textContent = `${pad2(gameState.time.hour)}:${pad2(gameState.time.minute)}`;
         el.clockDate.textContent = `Ngày ${gameState.time.day} Tháng ${gameState.time.month}, Năm ${gameState.time.year}`;
+        if (el.clockPeriodBadge) {
+          el.clockPeriodBadge.textContent = daytimeNow ? '☀ Trời Sáng' : '☾ Trời Tối';
+          el.clockPeriodBadge.className = daytimeNow
+            ? 'text-[#f2d085] font-semibold'
+            : 'text-[#e78f95] font-semibold';
+        }
+        if (el.statusClockDial) {
+          el.statusClockDial.classList.toggle('day-mode', daytimeNow);
+        }
+        if (el.wardrobeCabinet) {
+          el.wardrobeCabinet.classList.toggle('wardrobe-daylight', daytimeNow);
+        }
 
         // Đồng bộ chỉ số trong Modal Túi
         el.invHungerVal.textContent = `${h}/100`;
@@ -2817,55 +3383,182 @@
         renderDiaryModal(delta > 0 ? 'next' : 'prev');
       }
 
+      function getWardrobeItemArt(itemId, taken) {
+        if (itemId === 'worn_coat') {
+          if (taken) {
+            return `
+              <svg class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 text-[#8b6f50]/70" viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M48 10 C48 6 54 6 54 11 C54 15 48 16 48 20" stroke-linecap="round" />
+                <path d="M48 20 L16 38 L80 38 Z" fill="rgba(78,52,32,0.3)" />
+              </svg>
+            `;
+          }
+          return `
+            <svg class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 coat-sway" viewBox="0 0 96 96" fill="none">
+              <path d="M48 8 C48 4 53 4 53 9 C53 13 48 14 48 18" stroke="#bfa074" stroke-width="2.2" stroke-linecap="round"/>
+              <path d="M48 18 L24 30 L72 30 Z" stroke="#7c5a3a" stroke-width="2" fill="#3c291a"/>
+              <path d="M27 28 L16 74 L27 78 L32 52 L30 88 L66 88 L64 52 L69 78 L80 74 L69 28 L57 23 L48 33 L39 23 Z" fill="#464247" stroke="#9e8e7b" stroke-width="1.6"/>
+              <path d="M39 23 L48 40 L57 23" fill="#2d292f" stroke="#b8a182" stroke-width="1.4"/>
+              <line x1="48" y1="40" x2="48" y2="87" stroke="#242026" stroke-width="1.6"/>
+              <circle cx="43" cy="52" r="2" fill="#c9a25e"/>
+              <circle cx="43" cy="63" r="2" fill="#c9a25e"/>
+              <circle cx="43" cy="74" r="2" fill="#c9a25e"/>
+            </svg>
+          `;
+        }
+        if (itemId === 'stale_rye_half') {
+          if (taken) {
+            return `
+              <svg class="w-12 h-12 shrink-0 opacity-50" viewBox="0 0 64 64" fill="none">
+                <circle cx="22" cy="44" r="2" fill="#9c7a52"/>
+                <circle cx="32" cy="48" r="1.5" fill="#826240"/>
+                <circle cx="41" cy="43" r="2.2" fill="#9c7a52"/>
+                <path d="M12 52 H52" stroke="#5c3e26" stroke-width="2" stroke-dasharray="4 4"/>
+              </svg>
+            `;
+          }
+          return `
+            <svg class="w-12 h-12 shrink-0" viewBox="0 0 64 64" fill="none">
+              <path d="M10 44 C10 25 22 18 35 18 C47 18 54 27 54 44 L50 48 H14 Z" fill="#6b4423" stroke="#d8ad6e" stroke-width="1.6"/>
+              <path d="M12 44 C16 32 24 27 32 27 C40 27 46 33 48 44 Z" fill="#9d6d3d" opacity="0.65"/>
+              <path d="M22 24 L27 31 M33 22 L38 30 M43 26 L46 33" stroke="#3c220f" stroke-width="2" stroke-linecap="round"/>
+              <path d="M14 44 H50 L46 51 H18 Z" fill="#c9b492" stroke="#7d6442" stroke-width="1.2"/>
+            </svg>
+          `;
+        }
+        if (itemId === 'brass_room_key') {
+          if (taken) {
+            return `
+              <svg class="w-12 h-12 shrink-0 opacity-45" viewBox="0 0 64 64" fill="none">
+                <path d="M14 46 H50" stroke="#6c5033" stroke-width="2" stroke-dasharray="3 4"/>
+              </svg>
+            `;
+          }
+          return `
+            <svg class="w-12 h-12 shrink-0 key-glint" viewBox="0 0 64 64" fill="none">
+              <circle cx="21" cy="32" r="10" stroke="#e8c26d" stroke-width="3.2" fill="rgba(166,120,42,0.22)"/>
+              <circle cx="21" cy="32" r="4" stroke="#f6dfa0" stroke-width="1.4"/>
+              <path d="M31 32 H54 M46 32 V41 M52 32 V39" stroke="#e8c26d" stroke-width="3.2" stroke-linecap="round"/>
+            </svg>
+          `;
+        }
+        return '';
+      }
+
       function renderWardrobeModal() {
-        el.wardrobeItemsList.innerHTML = '';
+        if (el.wardrobeCabinet) {
+          el.wardrobeCabinet.classList.toggle('wardrobe-daylight', isDaytime());
+        }
 
-        gameState.wardrobeItems.forEach((slot, idx) => {
+        const takeSlot = (idx) => {
+          const slot = gameState.wardrobeItems[idx];
+          if (!slot || slot.taken) return;
           const def = ITEMS[slot.id];
+          slot.taken = true;
+          addItemToInventory(slot.id, 1);
+          if (el.wardrobeInspectText && def) {
+            el.wardrobeInspectText.textContent = `Đã cất [${def.name}] vào Túi Hành Trang.`;
+          }
+          autoSaveQuiet();
+          renderWardrobeModal();
+        };
+
+        // 1. KHOANG TRÊN: Áo khoác dạ cũ sờn treo trên thanh sắt
+        const coatIdx = gameState.wardrobeItems.findIndex(s => s.id === 'worn_coat');
+        const coatSlot = coatIdx >= 0 ? gameState.wardrobeItems[coatIdx] : null;
+        const coatDef = ITEMS.worn_coat;
+        el.wardrobeRailZone.innerHTML = '';
+        if (coatSlot && coatDef) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.disabled = coatSlot.taken;
+          btn.className = `w-full wardrobe-object-btn flex items-center gap-3 ${coatSlot.taken ? 'is-taken' : ''}`;
+          btn.innerHTML = `
+            ${getWardrobeItemArt('worn_coat', coatSlot.taken)}
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2 mb-0.5">
+                <span class="font-display font-bold text-xs sm:text-sm text-[#f4e4c7]">${coatDef.name}</span>
+                ${coatSlot.taken
+                  ? '<span class="text-[10px] px-2 py-0.5 rounded bg-[#18261a] border border-[#54885a]/55 text-[#9ed9a5]">Đã lấy · Chỉ còn móc gỗ trống</span>'
+                  : '<span class="text-[10px] px-2 py-0.5 rounded bg-[#3a2617] border border-[#c9a25e]/55 text-[#f4d799]">Treo trên thanh sắt</span>'}
+              </div>
+              <p class="text-[11px] sm:text-xs text-[#bba88d] leading-snug">
+                ${coatSlot.taken ? 'Chiếc móc áo bằng gỗ đong đưa nhè nhẹ trên thanh sắt rỉ.' : coatDef.desc}
+              </p>
+            </div>
+            ${coatSlot.taken
+              ? ''
+              : '<span class="px-2.5 py-1.5 rounded-lg btn-brass text-[11px] font-semibold shrink-0">Lấy áo</span>'}
+          `;
+          btn.addEventListener('mouseenter', () => {
+            if (el.wardrobeInspectText) el.wardrobeInspectText.textContent = coatSlot.taken ? 'Thanh treo đồ chỉ còn chiếc móc gỗ trống.' : coatDef.inspect;
+          });
+          if (!coatSlot.taken) {
+            btn.addEventListener('click', () => takeSlot(coatIdx));
+          }
+          el.wardrobeRailZone.appendChild(btn);
+        }
+
+        // 2. KHOANG GIỮA: Kệ gỗ chứa Nửa ổ bánh mì lúa mạch đen & Chìa khóa đồng phòng 14
+        el.wardrobeShelfZone.innerHTML = '';
+        ['stale_rye_half', 'brass_room_key'].forEach(itemId => {
+          const idx = gameState.wardrobeItems.findIndex(s => s.id === itemId);
+          if (idx === -1) return;
+          const slot = gameState.wardrobeItems[idx];
+          const def = ITEMS[itemId];
           if (!def) return;
-          const row = document.createElement('div');
-          row.className = 'flex items-center justify-between gap-3 p-3 rounded-lg bg-[#1c1511] border border-[#c9a25e]/32';
 
-          const actionBtn = slot.taken
-            ? `<span class="text-[11px] px-2.5 py-1 rounded bg-[#182419] border border-[#54885a]/50 text-[#9cd4a3] shrink-0">Đã lấy</span>`
-            : `<button data-take-wardrobe="${idx}" type="button" class="px-3 py-1.5 rounded-lg btn-brass text-xs font-semibold shrink-0 cursor-pointer">Lấy vào Túi</button>`;
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.disabled = slot.taken;
+          card.className = `wardrobe-object-btn flex items-center gap-2.5 ${slot.taken ? 'is-taken' : ''}`;
 
-          const foodTag = def.category === 'food'
-            ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-[#2d2011] border border-[#c9a25e]/42 text-[#f3ca78]">+${def.hungerRestore} Độ No</span>`
-            : '';
+          const pill = slot.taken
+            ? `<span class="text-[9.5px] px-2 py-0.5 rounded bg-[#18261a] border border-[#54885a]/50 text-[#9ed9a5]">Đã lấy</span>`
+            : (def.category === 'food'
+                ? `<span class="text-[9.5px] px-2 py-0.5 rounded bg-[#362411] border border-[#e3b35a]/55 text-[#f7d283]">+${def.hungerRestore} Độ No</span>`
+                : `<span class="text-[9.5px] px-2 py-0.5 rounded bg-[#2d2116] border border-[#c9a25e]/50 text-[#eed199]">Vật phẩm</span>`);
 
-          row.innerHTML = `
+          card.innerHTML = `
+            ${getWardrobeItemArt(itemId, slot.taken)}
             <div class="min-w-0 flex-1">
               <div class="flex flex-wrap items-center gap-1.5 mb-0.5">
-                <span class="font-semibold text-xs sm:text-sm text-[#f4e6cc]">${def.name}</span>
-                ${foodTag}
+                <span class="font-semibold text-xs text-[#f5e7cd] truncate">${def.name}</span>
+                ${pill}
               </div>
-              <p class="text-[11.5px] text-[#b7a68c] leading-snug">${def.desc}</p>
+              <p class="text-[11px] text-[#b5a388] leading-snug line-clamp-2">
+                ${slot.taken ? 'Mặt kệ gỗ bám lớp bụi mỏng nơi món đồ từng đặt.' : def.desc}
+              </p>
             </div>
-            ${actionBtn}
           `;
-          el.wardrobeItemsList.appendChild(row);
-        });
-
-        el.wardrobeItemsList.querySelectorAll('[data-take-wardrobe]').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const idx = Number(btn.getAttribute('data-take-wardrobe'));
-            const slot = gameState.wardrobeItems[idx];
-            if (!slot || slot.taken) return;
-            slot.taken = true;
-            addItemToInventory(slot.id, 1);
-            autoSaveQuiet();
-            renderWardrobeModal();
+          card.addEventListener('mouseenter', () => {
+            if (el.wardrobeInspectText) el.wardrobeInspectText.textContent = slot.taken ? `Bạn đã lấy ${def.name} khỏi kệ gỗ.` : (def.inspect || def.desc);
           });
+          if (!slot.taken) {
+            card.addEventListener('click', () => takeSlot(idx));
+          }
+          el.wardrobeShelfZone.appendChild(card);
         });
 
-        // Tấm ván lỏng đáy tủ
+        // 3. ĐÁY TỦ: Sàn gỗ & Tấm ván lỏng có thể cạy mở
         if (!gameState.wardrobeSecretOpened) {
           el.wardrobeSecretArea.innerHTML = `
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-              <div>
-                <div class="text-xs font-display font-bold text-[#f2d699]">Tấm ván lỏng dưới đáy tủ</div>
-                <p class="text-[11.5px] text-[#bba98e] mt-0.5">Một mảnh ván gỗ ở góc đáy tủ hơi kênh lên, có dấu hiệu từng được cạy ra để giấu đồ.</p>
+            <div class="wardrobe-loose-plank flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <svg class="w-10 h-10 shrink-0" viewBox="0 0 48 48" fill="none">
+                  <rect x="4" y="24" width="40" height="14" rx="2" fill="#3a2315" stroke="#c9a25e" stroke-width="1.4" transform="rotate(-4 24 31)"/>
+                  <circle cx="34" cy="34" r="3" fill="#f3d690" opacity="0.85"/>
+                  <path d="M8 18 L40 15" stroke="#7c5534" stroke-width="1.6" stroke-dasharray="3 3"/>
+                </svg>
+                <div class="min-w-0">
+                  <div class="text-xs font-display font-bold text-[#f4d898] flex items-center gap-1.5">
+                    <span>Tấm ván lỏng dưới đáy tủ</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#f5cf74] shadow-[0_0_8px_#f5cf74]"></span>
+                  </div>
+                  <p class="text-[11px] text-[#c2af93] mt-0.5 leading-snug">
+                    Góc ván gỗ kênh lên để lộ khe tối và ánh kim loại mờ nhạt ẩn bên dưới.
+                  </p>
+                </div>
               </div>
               <button id="btn-pry-wardrobe-secret" type="button" class="px-3.5 py-2 rounded-lg btn-crimson text-xs font-semibold shrink-0 cursor-pointer">
                 Cạy tấm ván lỏng
@@ -2876,18 +3569,59 @@
             gameState.wardrobeSecretOpened = true;
             addMoney(0, 0, 8);
             addItemToInventory('hidden_amulet', 1);
+            if (el.wardrobeInspectText) {
+              el.wardrobeInspectText.textContent = 'Bạn cạy bật tấm ván gỗ lên, tìm thấy 8 Penny và Mảnh bùa bạc khắc cổ tự!';
+            }
             autoSaveQuiet();
             renderWardrobeModal();
           });
         } else {
           el.wardrobeSecretArea.innerHTML = `
-            <div class="text-xs text-[#9ecfa4] flex items-center gap-2">
-              <span>✓</span>
-              <span>Bạn đã cạy mở ngăn đáy tủ, lấy ra <strong>8 Penny</strong> và <strong>Mảnh bùa bạc khắc cổ tự</strong>.</span>
+            <div class="wardrobe-hidden-hollow flex items-center gap-3 text-xs text-[#a8dbb0]">
+              <span class="w-6 h-6 rounded-full bg-[#19301e] border border-[#61a86d]/55 flex items-center justify-center shrink-0">✓</span>
+              <div class="leading-snug">
+                <strong class="text-[#d3f2d7]">Hốc gỗ dưới đáy tủ đã được cạy mở.</strong>
+                <span class="text-[#b8cbb9]"> Bạn đã thu được 8 Penny đồng và Mảnh bùa bạc khắc cổ tự.</span>
+              </div>
             </div>
           `;
         }
         syncTopToolbarButtons();
+      }
+
+      function openWardrobeModal(onClose = null) {
+        if (wardrobeCloseTimer) {
+          clearTimeout(wardrobeCloseTimer);
+          wardrobeCloseTimer = null;
+        }
+        onWardrobeCloseCallback = typeof onClose === 'function' ? onClose : null;
+        renderWardrobeModal();
+        if (el.wardrobeInspectText) {
+          el.wardrobeInspectText.textContent = 'Cánh tủ gỗ kẽo kẹt mở ra — chạm trực tiếp vào vật phẩm để lấy vào Túi.';
+        }
+        el.wardrobeCabinet.classList.remove('wardrobe-doors-open');
+        el.wardrobeModal.classList.remove('hidden');
+        // Kích hoạt hoạt ảnh mở 2 cánh cửa tủ gỗ 3D chân thật
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            el.wardrobeCabinet.classList.add('wardrobe-doors-open');
+          });
+        });
+      }
+
+      function closeWardrobeModal() {
+        if (el.wardrobeModal.classList.contains('hidden')) return;
+        el.wardrobeCabinet.classList.remove('wardrobe-doors-open');
+        if (wardrobeCloseTimer) clearTimeout(wardrobeCloseTimer);
+        wardrobeCloseTimer = setTimeout(() => {
+          wardrobeCloseTimer = null;
+          closeWardrobeModal();
+          if (typeof onWardrobeCloseCallback === 'function') {
+            const cb = onWardrobeCloseCallback;
+            onWardrobeCloseCallback = null;
+            cb();
+          }
+        }, 320);
       }
 
       function renderNotesModal() {
@@ -3360,7 +4094,7 @@
         });
       }
 
-      /** ĐIỂM 2: KIỂM TRA TỦ QUẦN ÁO CŨ -> ZOOM VÀO TỦ -> MỞ KHÓA NÚT 🚪 MỞ TỦ */
+      /** ĐIỂM 2: KIỂM TRA TỦ QUẦN ÁO CŨ -> ZOOM VÀO TỦ -> MỞ TỦ 3D CHÂN THẬT -> MỞ KHÓA NÚT 🚪 MỞ TỦ */
       async function runInvestigateWardrobe() {
         isCinematicBusy = true;
         gameState.stage = 'investigating';
@@ -3376,22 +4110,20 @@
         startDialogueQueue([
           {
             speaker: 'Dẫn chuyện',
-            text: 'Bạn kéo nhẹ cánh cửa gỗ bong tróc của chiếc tủ quần áo cũ. Bản lề han gỉ rít lên khe khẽ trong căn phòng lặng ngắt.'
-          },
-          {
-            speaker: 'Dẫn chuyện',
-            text: 'Bên trong treo một chiếc áo khoác dạ cũ sờn, trên kệ gỗ đặt nửa ổ bánh mì lúa mạch đen đã hơi khô cùng chiếc chìa khóa đồng của phòng số 14.'
-          },
-          {
-            speaker: '{{NAME}} (Nội tâm)',
-            text: '“Khoan đã... Tấm ván gỗ dưới đáy tủ hơi kênh lên một góc, như thể từng bị ai đó cạy ra để giấu thứ gì bên dưới!”'
-          },
-          {
-            speaker: 'Hệ thống',
-            text: '✦ Đã mở khóa nút [🚪 Mở Tủ] ở góc trên bên phải! Bạn có thể bấm trực tiếp để lấy bánh mì/đồ dùng vào Túi hoặc cạy tấm ván đáy tủ bất cứ lúc nào.'
+            text: 'Bạn đặt tay lên tay nắm đồng cũ kỹ, kéo mạnh hai cánh cửa gỗ bong tróc của chiếc tủ quần áo. Bản lề han gỉ rít lên khe khẽ trong căn phòng lặng ngắt...'
           }
         ], () => {
-          enterRoomOverviewPhaseC(false);
+          hideDialogueBox();
+          openWardrobeModal(() => {
+            startDialogueQueue([
+              {
+                speaker: 'Hệ thống',
+                text: '✦ Đã mở khóa nút [🚪 Mở Tủ] ở góc trên bên phải! Bạn có thể mở lại chiếc tủ quần áo cũ để lấy đồ hoặc kiểm tra tấm ván đáy tủ bất cứ lúc nào.'
+              }
+            ], () => {
+              enterRoomOverviewPhaseC(false);
+            });
+          });
         });
       }
 
@@ -3446,7 +4178,9 @@
           ? [
               {
                 speaker: 'Dẫn chuyện',
-                text: 'Bạn đẩy cửa bước trở lại căn phòng số 14 quen thuộc. Ánh trăng đỏ vẫn rọi xiên qua ô cửa sổ lên mặt bàn gỗ cũ kỹ.',
+                text: isDaytime()
+                  ? 'Bạn đẩy cửa bước trở lại căn phòng số 14 quen thuộc. Ánh nắng mờ sương ban ngày rọi xiên qua ô cửa sổ lên mặt bàn gỗ cũ kỹ.'
+                  : 'Bạn đẩy cửa bước trở lại căn phòng số 14 quen thuộc. Ánh trăng đỏ vẫn rọi xiên qua ô cửa sổ lên mặt bàn gỗ cũ kỹ.',
                 autoTriggerOnEnd: true
               }
             ]
@@ -3491,8 +4225,12 @@
         autoSaveQuiet();
 
         const introText = firstVisit
-          ? 'Bạn đặt tay đẩy cánh cửa gỗ cũ cọt kẹt mở ra. Hành lang tầng ba hiện ra trước mắt trong sắc trăng đỏ xuyên qua ô kính cao, ngọn đèn dầu treo tường hắt ánh sáng leo lét xuống dãy ván sàn tối thẫm.'
-          : 'Bạn đứng giữa hành lang tầng ba tĩnh mịch của khu nhà trọ. Phía cuối hành lang là cầu thang xuống tầng trệt và lối dẫn sang phòng tắm chung.';
+          ? (isDaytime()
+              ? 'Bạn đặt tay đẩy cánh cửa gỗ cũ cọt kẹt mở ra. Hành lang tầng ba ngập tràn ánh sáng mờ sương rọi nghiêng qua hai ô cửa sổ cao xuống dãy ván sàn gỗ.'
+              : 'Bạn đặt tay đẩy cánh cửa gỗ cũ cọt kẹt mở ra. Hành lang tầng ba hiện ra trước mắt trong sắc trăng đỏ xuyên qua ô kính cao, ngọn đèn dầu treo tường hắt ánh sáng leo lét xuống dãy ván sàn tối thẫm.')
+          : (isDaytime()
+              ? 'Bạn đứng giữa hành lang tầng ba yên tĩnh trong ánh nắng ban ngày lờ mờ hơi sương. Phía cuối hành lang là cầu thang xuống tầng trệt và lối dẫn sang phòng tắm chung.'
+              : 'Bạn đứng giữa hành lang tầng ba tĩnh mịch của khu nhà trọ. Phía cuối hành lang là cầu thang xuống tầng trệt và lối dẫn sang phòng tắm chung.');
 
         startDialogueQueue([
           {
@@ -3619,7 +4357,9 @@
           },
           {
             speaker: 'Dẫn chuyện',
-            text: 'Xuyên qua ô kính mờ, vầng trăng đỏ rực treo lơ lửng ngay trên con phố Khu Phía Tây Tingen chìm trong làn sương đêm dày đặc...',
+            text: isDaytime()
+              ? 'Xuyên qua ô kính mờ, con phố Khu Phía Tây Tingen hiện ra mờ ảo dưới bầu trời sáng trắng đục sương mù và khói than...'
+              : 'Xuyên qua ô kính mờ, vầng trăng đỏ rực treo lơ lửng ngay trên con phố Khu Phía Tây Tingen chìm trong làn sương đêm dày đặc...',
             autoTriggerOnEnd: true
           }
         ], () => {
@@ -3918,12 +4658,11 @@
         });
 
         el.btnQuickWardrobe.addEventListener('click', () => {
-          renderWardrobeModal();
-          el.wardrobeModal.classList.remove('hidden');
+          openWardrobeModal(null);
         });
-        el.btnCloseWardrobe.addEventListener('click', () => el.wardrobeModal.classList.add('hidden'));
+        el.btnCloseWardrobe.addEventListener('click', closeWardrobeModal);
         el.wardrobeModal.addEventListener('click', e => {
-          if (e.target === el.wardrobeModal) el.wardrobeModal.classList.add('hidden');
+          if (e.target === el.wardrobeModal) closeWardrobeModal();
         });
 
         // 7. Túi Hành Trang & Ghi Chép
